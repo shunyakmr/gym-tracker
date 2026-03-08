@@ -8,7 +8,8 @@ const el = {
   lastGymDay: document.getElementById("lastGymDay"),
   calendarMonth: document.getElementById("calendarMonth"),
   calendarGrid: document.getElementById("calendarGrid"),
-  progressChart: document.getElementById("progressChart")
+  progressChart: document.getElementById("progressChart"),
+  benchChart: document.getElementById("benchChart")
 };
 
 function toLocalDateKey(iso) {
@@ -109,6 +110,40 @@ function buildDailySeries(items, daysBack = 60) {
   return { labels, totals };
 }
 
+function buildBenchWeightSeries(items, daysBack = 60) {
+  const dailyBenchWeight = new Map();
+
+  for (const entry of items) {
+    const name = String(entry.exerciseName || "").toLowerCase();
+    const id = String(entry.exerciseId || "").toLowerCase();
+    const isDbBench = id === "db_bench" || name.includes("db bench press");
+    if (!isDbBench) continue;
+
+    const key = toLocalDateKey(entry.createdAt);
+    const weight = Number(entry.weight);
+    if (!Number.isFinite(weight)) continue;
+
+    const prev = dailyBenchWeight.get(key);
+    dailyBenchWeight.set(key, prev === undefined ? weight : Math.max(prev, weight));
+  }
+
+  const labels = [];
+  const weights = [];
+
+  const end = new Date();
+  end.setHours(0, 0, 0, 0);
+  const start = new Date(end);
+  start.setDate(start.getDate() - (daysBack - 1));
+
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const key = toLocalDateKey(d);
+    labels.push(`${d.getMonth() + 1}/${d.getDate()}`);
+    weights.push(dailyBenchWeight.has(key) ? dailyBenchWeight.get(key) : null);
+  }
+
+  return { labels, weights };
+}
+
 function renderChart(items) {
   const { labels, totals } = buildDailySeries(items, 60);
   // Chart.js is loaded from CDN in dashboard.html.
@@ -151,11 +186,55 @@ function renderChart(items) {
   });
 }
 
+function renderBenchChart(items) {
+  const { labels, weights } = buildBenchWeightSeries(items, 60);
+  // Chart.js is loaded from CDN in dashboard.html.
+  // eslint-disable-next-line no-undef
+  new Chart(el.benchChart, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "DB Bench Weight (kg)",
+          data: weights,
+          borderColor: "#a3e635",
+          backgroundColor: "rgba(163,230,53,0.16)",
+          borderWidth: 2,
+          tension: 0.25,
+          pointRadius: 2,
+          spanGaps: false,
+          fill: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: { color: "#d4d4d8" }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: "#71717a", maxTicksLimit: 10 },
+          grid: { color: "rgba(113,113,122,0.15)" }
+        },
+        y: {
+          ticks: { color: "#71717a" },
+          grid: { color: "rgba(113,113,122,0.15)" }
+        }
+      }
+    }
+  });
+}
+
 function init() {
   const daySet = buildWorkoutDaySet(logs);
   renderStats(daySet);
   renderCalendar(daySet);
   renderChart(logs);
+  renderBenchChart(logs);
 }
 
 init();

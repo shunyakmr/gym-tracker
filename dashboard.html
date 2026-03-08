@@ -50,7 +50,7 @@
     <header class="mb-3 flex items-start justify-between gap-3">
       <div>
         <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Training Dashboard</h1>
-        <p class="text-zinc-400 text-sm">Consistency, streak, and pull-up progress from your saved logs.</p>
+        <p class="text-zinc-400 text-sm">Consistency and progress trends from your saved logs.</p>
       </div>
       <a href="./index.html" class="shrink-0 rounded-md border border-cyan-500/70 px-3 py-1.5 text-xs text-cyan-300 hover:bg-cyan-500/10">Back To Tracker</a>
     </header>
@@ -81,6 +81,11 @@
     <section class="panel rounded-2xl p-4">
       <h2 class="text-lg font-semibold text-cyan-300 mb-2">Daily Volume Trend (last 60 days)</h2>
       <canvas id="progressChart" height="120"></canvas>
+    </section>
+
+    <section class="panel rounded-2xl p-4 mt-3">
+      <h2 class="text-lg font-semibold text-lime-300 mb-2">DB Bench Press Weight By Day (last 60 days)</h2>
+      <canvas id="benchChart" height="120"></canvas>
     </section>
   </main>
 
