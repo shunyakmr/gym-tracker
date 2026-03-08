@@ -1,4 +1,5 @@
 import { loadState } from "./storage.js";
+import { initThemeToggle } from "./theme.js";
 
 const state = loadState();
 const logs = Array.isArray(state.logs) ? state.logs : [];
@@ -7,8 +8,11 @@ const el = {
   monthDays: document.getElementById("monthDays"),
   lastGymDay: document.getElementById("lastGymDay"),
   dashboardTitle: document.getElementById("dashboardTitle"),
+  themeToggle: document.getElementById("themeToggle"),
   calendarMonth: document.getElementById("calendarMonth"),
   calendarGrid: document.getElementById("calendarGrid"),
+  pullupSection: document.getElementById("pullupSection"),
+  benchSection: document.getElementById("benchSection"),
   progressChart: document.getElementById("progressChart"),
   benchChart: document.getElementById("benchChart")
 };
@@ -234,7 +238,34 @@ function renderBenchChart(items) {
   });
 }
 
+function menuHasPullups(plan) {
+  for (const day of (plan.days || [])) {
+    for (const ex of (day.exercises || [])) {
+      const id = String(ex.id || "").toLowerCase();
+      const name = String(ex.name || "").toLowerCase();
+      if (id.includes("pullup") || id.includes("pull-up") || name.includes("pullup") || name.includes("pull-up") || name.includes("pull up")) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function menuHasDbBench(plan) {
+  for (const day of (plan.days || [])) {
+    for (const ex of (day.exercises || [])) {
+      const id = String(ex.id || "").toLowerCase();
+      const name = String(ex.name || "").toLowerCase();
+      if (id === "db_bench" || name.includes("db bench") || name.includes("dumbbell bench")) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function init() {
+  initThemeToggle(el.themeToggle);
   const baseTitle = String(state.plan?.title || "Training Tracker");
   if (el.dashboardTitle) {
     el.dashboardTitle.textContent = `${baseTitle} Dashboard`;
@@ -243,8 +274,18 @@ function init() {
   const daySet = buildWorkoutDaySet(logs);
   renderStats(daySet);
   renderCalendar(daySet);
-  renderChart(logs);
-  renderBenchChart(logs);
+
+  if (menuHasPullups(state.plan)) {
+    renderChart(logs);
+  } else if (el.pullupSection) {
+    el.pullupSection.remove();
+  }
+
+  if (menuHasDbBench(state.plan)) {
+    renderBenchChart(logs);
+  } else if (el.benchSection) {
+    el.benchSection.remove();
+  }
 }
 
 init();

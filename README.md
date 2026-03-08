@@ -1,4 +1,4 @@
-# Gym Menu Tracker
+# Training Tracker
 
 Mobile-first strength tracker with a dark neon gym theme, designed to run as a static site on GitHub Pages.
 
@@ -14,15 +14,16 @@ Mobile-first strength tracker with a dark neon gym theme, designed to run as a s
 ## How to use (daily)
 
 1. Open the app on your phone.
-2. In `Quick Log`, choose:
+2. Use the slider toggle in the top-right to switch light/dark mode.
+3. In `Quick Log`, choose:
    - `Day`
    - `Exercise`
    - `Weight`, `Reps`, `Sets`
-3. Tap `Save Entry`.
-4. Check exercise cards for current working weight and recent logs.
-5. Open `Dashboard` for consistency + streak + graph view.
+4. Tap `Save Entry`.
+5. Check exercise cards for current working weight and recent logs.
+6. Open `Dashboard` for consistency + streak + graph view.
 
-## How to edit your menu safely
+## How to customize your plan
 
 1. Open `Menu Editor (JSON)`.
 2. Edit plan JSON and keep at least:
@@ -33,6 +34,70 @@ Mobile-first strength tracker with a dark neon gym theme, designed to run as a s
 3. Tap `Save Program JSON`.
 
 The app auto-normalizes IDs, uses whatever day list you provide, and carries current weights forward where possible.
+
+## Dashboard graph behavior
+
+- `Pull-Ups` graph is shown only if your menu includes a pull-up exercise.
+- `DB Bench Press` graph is shown only if your menu includes a DB/dumbbell bench exercise.
+- If those activities are not in your plan, those graph cards are hidden automatically.
+
+## Build a plan with AI chat (easy mode)
+
+1. Open your favorite AI chat tool.
+2. Ask it to output JSON in the exact format below.
+3. Copy the JSON output.
+4. Paste into `Menu Editor (JSON)` in this app.
+5. Tap `Save Program JSON`.
+
+Example prompt you can paste into AI chat:
+
+```text
+Create a gym plan JSON for this tracker app.
+Return only valid JSON (no markdown, no commentary).
+Use this exact schema:
+{
+  "title": "string",
+  "globalRules": ["string"],
+  "progressionRules": ["string"],
+  "benchmarks": ["string"],
+  "days": [
+    {
+      "name": "string",
+      "exercises": [
+        {
+          "name": "string",
+          "target": "string",
+          "prescribed": "string",
+          "currentWeight": 0
+        }
+      ]
+    }
+  ]
+}
+Make [N] training days named [DAY NAMES], and include [GOALS/EQUIPMENT/EXPERIENCE].
+```
+
+Minimal valid JSON example:
+
+```json
+{
+  "title": "My Training Plan",
+  "days": [
+    {
+      "name": "Upper Body",
+      "exercises": [
+        { "name": "Bench Press", "target": "3 x 5", "prescribed": "40 kg", "currentWeight": 40 }
+      ]
+    },
+    {
+      "name": "Lower Body",
+      "exercises": [
+        { "name": "Squat", "target": "3 x 5", "prescribed": "50 kg", "currentWeight": 50 }
+      ]
+    }
+  ]
+}
+```
 
 ## Backups
 

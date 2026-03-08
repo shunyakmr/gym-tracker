@@ -1,5 +1,6 @@
 import { normalizePlan } from "./plan.js";
 import { loadState, saveState, getDefaultState, exportState, clearAllStoredData, migrateState } from "./storage.js";
+import { initThemeToggle } from "./theme.js";
 
 let state = loadState();
 let activeDayTab = "all";
@@ -32,6 +33,7 @@ const el = {
   progressionRules: document.getElementById("progressionRules"),
   benchmarks: document.getElementById("benchmarks"),
   appTitle: document.getElementById("appTitle"),
+  themeToggle: document.getElementById("themeToggle"),
   programInput: document.getElementById("programInput"),
   saveLogBtn: document.getElementById("saveLogBtn"),
   saveProgramBtn: document.getElementById("saveProgramBtn"),
@@ -325,5 +327,6 @@ function renderAll() {
 }
 
 bindEvents();
+initThemeToggle(el.themeToggle);
 applyOneOffPlanMigrations();
 renderAll();

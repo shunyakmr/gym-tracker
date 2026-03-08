@@ -27,11 +27,22 @@
     };
   </script>
   <style>
+    html[data-theme="light"] {
+      color-scheme: light;
+    }
+
     body {
       background:
         radial-gradient(circle at 15% -10%, rgba(34, 211, 238, 0.12), transparent 35%),
         radial-gradient(circle at 88% 8%, rgba(163, 230, 53, 0.08), transparent 30%),
         linear-gradient(180deg, #050608 0%, #0b0e15 100%);
+    }
+
+    html[data-theme="light"] body {
+      background:
+        radial-gradient(circle at 15% -10%, rgba(14, 116, 144, 0.08), transparent 35%),
+        radial-gradient(circle at 88% 8%, rgba(101, 163, 13, 0.08), transparent 30%),
+        linear-gradient(180deg, #f3f4f6 0%, #eef2ff 100%);
     }
 
     .panel {
@@ -40,8 +51,66 @@
       box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
     }
 
+    html[data-theme="light"] .panel {
+      background: linear-gradient(160deg, rgba(255, 255, 255, .95), rgba(248, 250, 252, .98));
+      border: 1px solid rgba(15, 23, 42, .12);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, .08);
+    }
+
     .day-cell {
       min-height: 54px;
+    }
+
+    .theme-toggle {
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(113, 113, 122, 0.8);
+      background: rgba(24, 24, 27, 0.9);
+      padding: 2px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color 120ms ease;
+    }
+
+    .theme-toggle-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #22d3ee;
+      transition: transform 120ms ease, background-color 120ms ease;
+      transform: translateX(0);
+    }
+
+    .theme-toggle.is-light {
+      background: #e2e8f0;
+    }
+
+    .theme-toggle.is-light .theme-toggle-thumb {
+      transform: translateX(16px);
+      background: #0f172a;
+    }
+
+    html[data-theme="light"] .text-zinc-100,
+    html[data-theme="light"] .text-zinc-200,
+    html[data-theme="light"] .text-zinc-300 {
+      color: #0f172a !important;
+    }
+
+    html[data-theme="light"] .text-zinc-400,
+    html[data-theme="light"] .text-zinc-500 {
+      color: #475569 !important;
+    }
+
+    html[data-theme="light"] .bg-zinc-900,
+    html[data-theme="light"] .bg-zinc-950,
+    html[data-theme="light"] .bg-zinc-950\/60 {
+      background-color: #f8fafc !important;
+    }
+
+    html[data-theme="light"] .border-zinc-700,
+    html[data-theme="light"] .border-zinc-800 {
+      border-color: #cbd5e1 !important;
     }
   </style>
 </head>
@@ -52,7 +121,24 @@
         <h1 id="dashboardTitle" class="text-2xl md:text-3xl font-bold tracking-tight">Training Dashboard</h1>
         <p class="text-zinc-400 text-sm">Consistency and progress trends from your saved logs.</p>
       </div>
-      <a href="./index.html" class="shrink-0 rounded-md border border-cyan-500/70 px-3 py-1.5 text-xs text-cyan-300 hover:bg-cyan-500/10">Back To Tracker</a>
+      <div class="shrink-0 flex items-center gap-2">
+        <button id="themeToggle" aria-label="Toggle light and dark mode" class="theme-toggle" type="button">
+          <span class="theme-toggle-thumb"></span>
+        </button>
+        <a href="./index.html" class="rounded-md border border-cyan-500/70 px-3 py-1.5 text-xs text-cyan-300 hover:bg-cyan-500/10">Back To Tracker</a>
+        <a
+          href="https://github.com/shunyakmr/gym-tracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open GitHub repository"
+          title="GitHub Repository"
+          class="inline-flex items-center justify-center rounded-md border border-zinc-700 px-2 py-1.5 text-zinc-300 hover:border-cyan-500 hover:text-cyan-300"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 fill-current" aria-hidden="true">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.4 7.86 10.93.58.11.8-.25.8-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.78 1.2 1.78 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.74.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.52.12-3.16 0 0 .97-.31 3.17 1.18.92-.26 1.91-.38 2.9-.38.98 0 1.98.13 2.9.38 2.2-1.49 3.17-1.18 3.17-1.18.63 1.64.24 2.86.12 3.16.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.69.41.35.78 1.04.78 2.1 0 1.52-.01 2.75-.01 3.13 0 .31.21.68.81.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+          </svg>
+        </a>
+      </div>
     </header>
 
     <section class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
@@ -78,12 +164,12 @@
       <p class="text-xs text-zinc-500 mt-2">Neon cells = gym day with at least one log.</p>
     </section>
 
-    <section class="panel rounded-2xl p-4">
+    <section id="pullupSection" class="panel rounded-2xl p-4">
       <h2 class="text-lg font-semibold text-cyan-300 mb-2">Pull-Ups Total Reps By Day (last 60 days)</h2>
       <canvas id="progressChart" height="120"></canvas>
     </section>
 
-    <section class="panel rounded-2xl p-4 mt-3">
+    <section id="benchSection" class="panel rounded-2xl p-4 mt-3">
       <h2 class="text-lg font-semibold text-lime-300 mb-2">DB Bench Press Weight By Day (last 60 days)</h2>
       <canvas id="benchChart" height="120"></canvas>
     </section>
