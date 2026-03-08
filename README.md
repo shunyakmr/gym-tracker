@@ -104,3 +104,22 @@ Minimal valid JSON example:
 - Data is stored locally in your browser (`localStorage`).
 - Use `Export Backup JSON` once in a while.
 - `Reset All Data` clears everything after confirmation.
+
+## Development
+
+- This project is a static site. Open `index.html` directly, or serve locally:
+  - `python3 -m http.server 8080`
+  - visit `http://localhost:8080`
+
+## Contributing
+
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution workflow.
+- See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
+
+## Security
+
+- See [SECURITY.md](SECURITY.md) for vulnerability reporting.
+
+## License
+
+- MIT License. See [LICENSE](LICENSE).
