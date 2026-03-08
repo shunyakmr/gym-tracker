@@ -219,6 +219,9 @@ async function runSync() {
   const result = await syncPending(state);
   saveState(state);
   renderSyncStatus();
+  if (result.usedFallback) {
+    console.info("Sync used no-cors fallback mode for Apps Script.");
+  }
   if (!result.skipped && result.synced === 0 && state.pendingSync.length > 0) {
     alert("Sync did not complete. Entries stay in pending queue.");
   }

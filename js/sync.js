@@ -12,6 +12,7 @@ export async function syncPending(state) {
 
   let synced = 0;
   let attempted = 0;
+  let usedFallback = false;
 
   while (state.pendingSync.length > 0) {
     attempted += 1;
@@ -28,7 +29,21 @@ export async function syncPending(state) {
       state.pendingSync.shift();
       synced += 1;
     } catch (_) {
-      break;
+      try {
+        // Google Apps Script web apps can reject CORS preflight for JSON.
+        // Fallback uses a simple request that browsers allow in no-cors mode.
+        await fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(item.payload)
+        });
+        state.pendingSync.shift();
+        synced += 1;
+        usedFallback = true;
+      } catch (_) {
+        break;
+      }
     }
   }
 
@@ -36,5 +51,5 @@ export async function syncPending(state) {
     state.settings.lastSyncedAt = new Date().toISOString();
   }
 
-  return { synced, attempted, skipped: false };
+  return { synced, attempted, skipped: false, usedFallback };
 }

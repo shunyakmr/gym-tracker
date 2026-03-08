@@ -109,3 +109,15 @@ function doPost(e) {
 6. Copy the Web App URL.
 7. In app -> `Data & Sync` -> paste URL -> `Save Sync URL`.
 8. Save logs normally; app auto-queues and syncs, and `Sync Pending` forces retry.
+
+## If sync still fails
+
+1. Confirm the Apps Script deployment is the **Web app URL** ending with `/exec` (not editor URL).
+2. In deployment settings, keep:
+   - Execute as: `Me`
+   - Access: `Anyone`
+3. After script edits, create a **new deployment version** and update URL in app.
+4. Check sheet tab is exactly named `Logs`.
+5. Retry `Sync Pending`.
+
+The app now includes a browser-safe fallback mode for Google Apps Script CORS behavior; pending entries should clear once requests are accepted.
