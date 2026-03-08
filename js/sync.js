@@ -8,11 +8,12 @@ export function enqueueSync(state, payload) {
 
 export async function syncPending(state) {
   const url = String(state.settings.syncUrl || "").trim();
-  if (!url) return { synced: 0, attempted: 0, skipped: true };
+  if (!url) return { synced: 0, attempted: 0, skipped: true, lastError: null };
 
   let synced = 0;
   let attempted = 0;
   let usedFallback = false;
+  let lastError = null;
 
   while (state.pendingSync.length > 0) {
     attempted += 1;
@@ -28,7 +29,7 @@ export async function syncPending(state) {
       }
       state.pendingSync.shift();
       synced += 1;
-    } catch (_) {
+    } catch (err1) {
       try {
         // Google Apps Script web apps can reject CORS preflight for JSON.
         // Fallback uses a simple request that browsers allow in no-cors mode.
@@ -41,8 +42,25 @@ export async function syncPending(state) {
         state.pendingSync.shift();
         synced += 1;
         usedFallback = true;
-      } catch (_) {
-        break;
+      } catch (err2) {
+        try {
+          // Final fallback: GET beacon with payload in query, useful for doGet-based Apps Script.
+          const q = new URLSearchParams({
+            source: "gym-tracker",
+            ts: new Date().toISOString(),
+            payload: JSON.stringify(item.payload)
+          });
+          await fetch(`${url}${url.includes("?") ? "&" : "?"}${q.toString()}`, {
+            method: "GET",
+            mode: "no-cors"
+          });
+          state.pendingSync.shift();
+          synced += 1;
+          usedFallback = true;
+        } catch (err3) {
+          lastError = String(err3?.message || err2?.message || err1?.message || "Unknown sync error");
+          break;
+        }
       }
     }
   }
@@ -51,5 +69,5 @@ export async function syncPending(state) {
     state.settings.lastSyncedAt = new Date().toISOString();
   }
 
-  return { synced, attempted, skipped: false, usedFallback };
+  return { synced, attempted, skipped: false, usedFallback, lastError };
 }

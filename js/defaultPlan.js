@@ -28,9 +28,7 @@ export const defaultPlan = {
         { id: "rdl_d1", name: "Romanian Deadlift", target: "3 x 5", prescribed: "45 kg", currentWeight: 45 },
         { id: "pullup_strength", name: "Pull-Ups (Strength Focus)", target: "5 x 3", prescribed: "Bodyweight 65 kg", currentWeight: 65 },
         { id: "chest_row", name: "Chest-Supported Row", target: "3 x 8 (pause at top)", prescribed: "12 kg DBs", currentWeight: 12 },
-        { id: "knee_raise", name: "Hanging Knee Raise", target: "3 x 8-10", prescribed: "Bodyweight", currentWeight: 0 },
-        { id: "calf_raise", name: "Calf Raises (Double-Leg)", target: "3 x 10", prescribed: "Bodyweight", currentWeight: 0 },
-        { id: "calf_iso", name: "Isometric Calf Hold", target: "2 x 40 sec", prescribed: "Bodyweight", currentWeight: 0 }
+        { id: "knee_raise", name: "Hanging Knee Raise", target: "3 x 8-10", prescribed: "Bodyweight", currentWeight: 0 }
       ]
     },
     {

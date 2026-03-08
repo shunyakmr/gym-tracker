@@ -5,6 +5,22 @@ import { enqueueSync, syncPending } from "./sync.js";
 let state = loadState();
 let activeDayTab = "all";
 
+function applyOneOffPlanMigrations() {
+  let changed = false;
+  for (const day of state.plan.days || []) {
+    const before = (day.exercises || []).length;
+    day.exercises = (day.exercises || []).filter(
+      (ex) => ex.id !== "calf_raise" && ex.id !== "calf_iso"
+    );
+    if (day.exercises.length !== before) {
+      changed = true;
+    }
+  }
+  if (changed) {
+    saveState(state);
+  }
+}
+
 const el = {
   daySelect: document.getElementById("daySelect"),
   exerciseSelect: document.getElementById("exerciseSelect"),
@@ -223,7 +239,10 @@ async function runSync() {
     console.info("Sync used no-cors fallback mode for Apps Script.");
   }
   if (!result.skipped && result.synced === 0 && state.pendingSync.length > 0) {
-    alert("Sync did not complete. Entries stay in pending queue.");
+    const msg = result.lastError
+      ? `Sync did not complete: ${result.lastError}. Entries stay in pending queue.`
+      : "Sync did not complete. Entries stay in pending queue.";
+    alert(msg);
   }
 }
 
@@ -303,4 +322,5 @@ function renderAll() {
 }
 
 bindEvents();
+applyOneOffPlanMigrations();
 renderAll();

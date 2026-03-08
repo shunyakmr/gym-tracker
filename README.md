@@ -58,7 +58,7 @@ The app auto-normalizes IDs and carries current weights forward where possible.
 3. Paste:
 
 ```javascript
-function doPost(e) {
+function writeLog(payload) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logs");
     if (!sheet) {
@@ -73,7 +73,6 @@ function doPost(e) {
       ]);
     }
 
-    var payload = JSON.parse(e.postData.contents || "{}");
     var log = payload.log || {};
 
     sheet.appendRow([
@@ -91,14 +90,38 @@ function doPost(e) {
       JSON.stringify(payload)
     ]);
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: true }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return { ok: true };
   } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
+function doPost(e) {
+  var payload = {};
+  try {
+    payload = JSON.parse((e && e.postData && e.postData.contents) || "{}");
+  } catch (_) {}
+  var result = writeLog(payload);
+  return ContentService
+    .createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  if (e && e.parameter && e.parameter.ping === "1") {
     return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
+      .createTextOutput(JSON.stringify({ ok: true, pong: true }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+
+  var payload = {};
+  try {
+    payload = JSON.parse((e && e.parameter && e.parameter.payload) || "{}");
+  } catch (_) {}
+  var result = writeLog(payload);
+  return ContentService
+    .createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 ```
 
@@ -106,7 +129,7 @@ function doPost(e) {
 5. Set:
    - Execute as: `Me`
    - Who has access: `Anyone`
-6. Copy the Web App URL.
+6. Copy the Web App URL (`.../exec`).
 7. In app -> `Data & Sync` -> paste URL -> `Save Sync URL`.
 8. Save logs normally; app auto-queues and syncs, and `Sync Pending` forces retry.
 
@@ -119,5 +142,6 @@ function doPost(e) {
 3. After script edits, create a **new deployment version** and update URL in app.
 4. Check sheet tab is exactly named `Logs`.
 5. Retry `Sync Pending`.
+6. In your browser, open `YOUR_EXEC_URL?ping=1`. You should see `{"ok":true,"pong":true}`.
 
 The app now includes a browser-safe fallback mode for Google Apps Script CORS behavior; pending entries should clear once requests are accepted.
