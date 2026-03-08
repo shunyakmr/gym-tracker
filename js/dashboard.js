@@ -4,8 +4,6 @@ const state = loadState();
 const logs = Array.isArray(state.logs) ? state.logs : [];
 
 const el = {
-  currentStreak: document.getElementById("currentStreak"),
-  longestStreak: document.getElementById("longestStreak"),
   monthDays: document.getElementById("monthDays"),
   lastGymDay: document.getElementById("lastGymDay"),
   calendarMonth: document.getElementById("calendarMonth"),
@@ -39,65 +37,6 @@ function buildWorkoutDaySet(items) {
   return new Set(items.map((l) => toLocalDateKey(l.createdAt)));
 }
 
-function getCurrentStreak(daySet) {
-  if (daySet.size === 0) return 0;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const todayKey = toLocalDateKey(today);
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayKey = toLocalDateKey(yesterday);
-
-  let cursor = null;
-  if (daySet.has(todayKey)) {
-    cursor = today;
-  } else if (daySet.has(yesterdayKey)) {
-    cursor = yesterday;
-  } else {
-    return 0;
-  }
-
-  let streak = 0;
-  while (true) {
-    const key = toLocalDateKey(cursor);
-    if (!daySet.has(key)) break;
-    streak += 1;
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  return streak;
-}
-
-function getLongestStreak(daySet) {
-  if (daySet.size === 0) return 0;
-
-  const dates = Array.from(daySet)
-    .map(fromDateKey)
-    .sort((a, b) => a - b);
-
-  let longest = 1;
-  let run = 1;
-
-  for (let i = 1; i < dates.length; i += 1) {
-    const prev = new Date(dates[i - 1]);
-    prev.setDate(prev.getDate() + 1);
-
-    if (
-      prev.getFullYear() === dates[i].getFullYear()
-      && prev.getMonth() === dates[i].getMonth()
-      && prev.getDate() === dates[i].getDate()
-    ) {
-      run += 1;
-      longest = Math.max(longest, run);
-    } else {
-      run = 1;
-    }
-  }
-
-  return longest;
-}
-
 function renderStats(daySet) {
   const sortedKeys = Array.from(daySet).sort();
   const lastKey = sortedKeys.length ? sortedKeys[sortedKeys.length - 1] : null;
@@ -106,10 +45,6 @@ function renderStats(daySet) {
   const monthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-`;
   const monthCount = sortedKeys.filter((k) => k.startsWith(monthPrefix)).length;
 
-  const currentWeeks = (getCurrentStreak(daySet) / 7).toFixed(1);
-  const longestWeeks = (getLongestStreak(daySet) / 7).toFixed(1);
-  el.currentStreak.textContent = `${currentWeeks} weeks`;
-  el.longestStreak.textContent = `${longestWeeks} weeks`;
   el.monthDays.textContent = `${monthCount} days`;
   el.lastGymDay.textContent = lastKey ? formatPrettyDate(lastKey) : "No logs yet";
 }
