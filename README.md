@@ -51,97 +51,32 @@ The app auto-normalizes IDs and carries current weights forward where possible.
    - `Branch`: `main` (or default), `/ (root)`
 4. Open the Pages URL on your phone.
 
-## Optional: Sync logs to Google Sheets
+## Recommended alternative: Notion sync (via Make.com webhook)
 
-1. Create a Google Sheet and name first tab `Logs`.
-2. Open `Extensions` -> `Apps Script`.
-3. Paste:
+Direct browser-to-Notion API is not recommended because it requires exposing your Notion secret.  
+Use a webhook relay (Make.com), then write to Notion server-side in that scenario.
 
-```javascript
-function writeLog(payload) {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logs");
-    if (!sheet) {
-      sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("Logs");
-    }
+1. Create a Notion database with columns:
+   - `Logged At` (date)
+   - `Day` (text)
+   - `Exercise` (title or text)
+   - `Weight` (number)
+   - `Reps` (number)
+   - `Sets` (number)
+2. In Make.com, create a new scenario:
+   - Trigger: `Webhooks > Custom webhook`
+   - Action: `Notion > Create a database item`
+3. Map webhook JSON fields from app payload:
+   - `log.createdAt`
+   - `log.dayName`
+   - `log.exerciseName`
+   - `log.weight`
+   - `log.reps`
+   - `log.sets`
+4. Turn scenario on and copy the webhook URL.
+5. In this app:
+   - `Data & Sync` -> paste URL in `Sync Webhook URL`
+   - click `Save Sync URL`
+   - click `Sync Pending`
 
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        "receivedAt", "event", "loggedAt",
-        "dayId", "dayName", "exerciseId", "exerciseName",
-        "target", "weight", "reps", "sets", "rawJson"
-      ]);
-    }
-
-    var log = payload.log || {};
-
-    sheet.appendRow([
-      new Date().toISOString(),
-      payload.event || "",
-      payload.loggedAt || "",
-      log.dayId || "",
-      log.dayName || "",
-      log.exerciseId || "",
-      log.exerciseName || "",
-      log.target || "",
-      log.weight || "",
-      log.reps || "",
-      log.sets || "",
-      JSON.stringify(payload)
-    ]);
-
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: String(err) };
-  }
-}
-
-function doPost(e) {
-  var payload = {};
-  try {
-    payload = JSON.parse((e && e.postData && e.postData.contents) || "{}");
-  } catch (_) {}
-  var result = writeLog(payload);
-  return ContentService
-    .createTextOutput(JSON.stringify(result))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function doGet(e) {
-  if (e && e.parameter && e.parameter.ping === "1") {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: true, pong: true }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-
-  var payload = {};
-  try {
-    payload = JSON.parse((e && e.parameter && e.parameter.payload) || "{}");
-  } catch (_) {}
-  var result = writeLog(payload);
-  return ContentService
-    .createTextOutput(JSON.stringify(result))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-```
-
-4. Deploy as web app: `Deploy` -> `New deployment` -> `Web app`.
-5. Set:
-   - Execute as: `Me`
-   - Who has access: `Anyone`
-6. Copy the Web App URL (`.../exec`).
-7. In app -> `Data & Sync` -> paste URL -> `Save Sync URL`.
-8. Save logs normally; app auto-queues and syncs, and `Sync Pending` forces retry.
-
-## If sync still fails
-
-1. Confirm the Apps Script deployment is the **Web app URL** ending with `/exec` (not editor URL).
-2. In deployment settings, keep:
-   - Execute as: `Me`
-   - Access: `Anyone`
-3. After script edits, create a **new deployment version** and update URL in app.
-4. Check sheet tab is exactly named `Logs`.
-5. Retry `Sync Pending`.
-6. In your browser, open `YOUR_EXEC_URL?ping=1`. You should see `{"ok":true,"pong":true}`.
-
-The app now includes a browser-safe fallback mode for Google Apps Script CORS behavior; pending entries should clear once requests are accepted.
+If Make/Notion is temporarily unavailable, logs remain queued in `Pending sync` and retry later.

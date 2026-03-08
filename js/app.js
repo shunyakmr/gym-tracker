@@ -286,7 +286,7 @@ function saveSyncSettings() {
   state.settings.syncUrl = el.syncUrlInput.value.trim();
   saveState(state);
   renderSyncStatus();
-  alert("Sync URL saved.");
+  alert("Sync webhook URL saved.");
 }
 
 async function importBackupFile(file) {
