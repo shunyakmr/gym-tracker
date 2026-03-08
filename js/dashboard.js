@@ -106,8 +106,10 @@ function renderStats(daySet) {
   const monthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-`;
   const monthCount = sortedKeys.filter((k) => k.startsWith(monthPrefix)).length;
 
-  el.currentStreak.textContent = `${getCurrentStreak(daySet)} days`;
-  el.longestStreak.textContent = `${getLongestStreak(daySet)} days`;
+  const currentWeeks = (getCurrentStreak(daySet) / 7).toFixed(1);
+  const longestWeeks = (getLongestStreak(daySet) / 7).toFixed(1);
+  el.currentStreak.textContent = `${currentWeeks} weeks`;
+  el.longestStreak.textContent = `${longestWeeks} weeks`;
   el.monthDays.textContent = `${monthCount} days`;
   el.lastGymDay.textContent = lastKey ? formatPrettyDate(lastKey) : "No logs yet";
 }
@@ -144,7 +146,6 @@ function renderCalendar(daySet) {
 
 function buildDailySeries(items, daysBack = 60) {
   const dailyTotal = new Map();
-  const dailyPullups = new Map();
 
   for (const entry of items) {
     const key = toLocalDateKey(entry.createdAt);
@@ -154,16 +155,10 @@ function buildDailySeries(items, daysBack = 60) {
 
     dailyTotal.set(key, (dailyTotal.get(key) || 0) + totalReps);
 
-    const name = String(entry.exerciseName || "").toLowerCase();
-    const isPullup = name.includes("pull-up") || name.includes("pull up") || name.includes("pullup");
-    if (isPullup) {
-      dailyPullups.set(key, (dailyPullups.get(key) || 0) + totalReps);
-    }
   }
 
   const labels = [];
   const totals = [];
-  const pullups = [];
 
   const end = new Date();
   end.setHours(0, 0, 0, 0);
@@ -174,14 +169,13 @@ function buildDailySeries(items, daysBack = 60) {
     const key = toLocalDateKey(d);
     labels.push(`${d.getMonth() + 1}/${d.getDate()}`);
     totals.push(dailyTotal.get(key) || 0);
-    pullups.push(dailyPullups.get(key) || 0);
   }
 
-  return { labels, totals, pullups };
+  return { labels, totals };
 }
 
 function renderChart(items) {
-  const { labels, totals, pullups } = buildDailySeries(items, 60);
+  const { labels, totals } = buildDailySeries(items, 60);
   // Chart.js is loaded from CDN in dashboard.html.
   // eslint-disable-next-line no-undef
   new Chart(el.progressChart, {
@@ -194,16 +188,6 @@ function renderChart(items) {
           data: totals,
           borderColor: "#22d3ee",
           backgroundColor: "rgba(34,211,238,0.16)",
-          borderWidth: 2,
-          tension: 0.25,
-          pointRadius: 0,
-          fill: true
-        },
-        {
-          label: "Pull-Up Reps / Day",
-          data: pullups,
-          borderColor: "#a3e635",
-          backgroundColor: "rgba(163,230,53,0.12)",
           borderWidth: 2,
           tension: 0.25,
           pointRadius: 0,
