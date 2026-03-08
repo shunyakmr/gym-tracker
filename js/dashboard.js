@@ -6,6 +6,7 @@ const logs = Array.isArray(state.logs) ? state.logs : [];
 const el = {
   monthDays: document.getElementById("monthDays"),
   lastGymDay: document.getElementById("lastGymDay"),
+  dashboardTitle: document.getElementById("dashboardTitle"),
   calendarMonth: document.getElementById("calendarMonth"),
   calendarGrid: document.getElementById("calendarGrid"),
   progressChart: document.getElementById("progressChart"),
@@ -234,6 +235,11 @@ function renderBenchChart(items) {
 }
 
 function init() {
+  const baseTitle = String(state.plan?.title || "Training Tracker");
+  if (el.dashboardTitle) {
+    el.dashboardTitle.textContent = `${baseTitle} Dashboard`;
+  }
+  document.title = `${baseTitle} Dashboard`;
   const daySet = buildWorkoutDaySet(logs);
   renderStats(daySet);
   renderCalendar(daySet);

@@ -26,12 +26,13 @@ Mobile-first strength tracker with a dark neon gym theme, designed to run as a s
 
 1. Open `Menu Editor (JSON)`.
 2. Edit plan JSON and keep at least:
+   - optional top-level `title` (app title)
    - top-level `days` array
    - each day has `name` and `exercises`
    - each exercise has `name` (ID optional)
 3. Tap `Save Program JSON`.
 
-The app auto-normalizes IDs and carries current weights forward where possible.
+The app auto-normalizes IDs, uses whatever day list you provide, and carries current weights forward where possible.
 
 ## Backups
 

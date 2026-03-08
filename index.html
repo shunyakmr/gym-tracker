@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gym Menu Tracker</title>
+  <title>Training Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -53,8 +53,8 @@
   <main class="max-w-5xl mx-auto px-3 py-4 md:py-8">
     <header class="mb-2 flex items-start justify-between gap-3">
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold tracking-tight">4-Day Strength Plan Tracker</h1>
-        <p class="text-zinc-400 text-sm md:text-base">Dark neon gym mode. Phone-first logging. Local storage with manual export backup.</p>
+        <h1 id="appTitle" class="text-2xl md:text-3xl font-bold tracking-tight">Training Tracker</h1>
+        <p class="text-zinc-400 text-sm md:text-base">Phone-first logging. Local storage with manual export backup.</p>
       </div>
       <a href="./dashboard.html" class="shrink-0 rounded-md border border-cyan-500/70 px-3 py-1.5 text-xs text-cyan-300 hover:bg-cyan-500/10">Dashboard</a>
     </header>
@@ -115,7 +115,7 @@
     <section class="panel rounded-2xl p-4 mb-3">
       <details>
         <summary class="cursor-pointer font-semibold text-cyan-300">Menu Editor (JSON)</summary>
-        <p class="text-xs text-zinc-400 mt-2">Edit your menu safely. IDs/weights are normalized for resilience when structure changes.</p>
+        <p class="text-xs text-zinc-400 mt-2">Edit your menu safely. Set a custom title with top-level "title". IDs/weights are normalized for resilience when structure changes.</p>
         <textarea id="programInput" class="w-full mt-2 rounded-xl bg-gym-900 border border-zinc-700 p-3 min-h-[220px] text-xs font-mono"></textarea>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
           <button id="saveProgramBtn" class="rounded-lg bg-lime-400 text-black font-semibold px-4 py-2 hover:bg-lime-300">Save Program JSON</button>

@@ -1,4 +1,5 @@
 export const defaultPlan = {
+  title: "Training Tracker",
   globalRules: [
     "RPE 6-7 (2-3 reps in reserve)",
     "2-3 sec controlled eccentrics",

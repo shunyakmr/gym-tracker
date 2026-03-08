@@ -31,6 +31,7 @@ const el = {
   globalRules: document.getElementById("globalRules"),
   progressionRules: document.getElementById("progressionRules"),
   benchmarks: document.getElementById("benchmarks"),
+  appTitle: document.getElementById("appTitle"),
   programInput: document.getElementById("programInput"),
   saveLogBtn: document.getElementById("saveLogBtn"),
   saveProgramBtn: document.getElementById("saveProgramBtn"),
@@ -308,6 +309,10 @@ function bindEvents() {
 }
 
 function renderAll() {
+  if (el.appTitle) {
+    el.appTitle.textContent = state.plan.title || "Training Tracker";
+  }
+  document.title = state.plan.title || "Training Tracker";
   renderList(el.globalRules, state.plan.globalRules || []);
   renderList(el.progressionRules, state.plan.progressionRules || []);
   renderList(el.benchmarks, state.plan.benchmarks || []);

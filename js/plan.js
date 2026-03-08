@@ -67,6 +67,7 @@ export function normalizePlan(inputPlan, prevPlan = null) {
   });
 
   return {
+    title: String(inputPlan.title || prevPlan?.title || "Training Tracker"),
     globalRules: Array.isArray(inputPlan.globalRules) ? inputPlan.globalRules : [],
     progressionRules: Array.isArray(inputPlan.progressionRules) ? inputPlan.progressionRules : [],
     benchmarks: Array.isArray(inputPlan.benchmarks) ? inputPlan.benchmarks : [],

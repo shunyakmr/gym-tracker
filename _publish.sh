@@ -32,9 +32,3 @@ echo "✅ Published: $BRANCH"
 
 # Make it executable (first time only)
 # chmod +x _publish.sh
-
-# Don't forget to do `conda activate envULMS562` before we publish
-# If we want a qmd file to be rendered to revealjs, we can say... quarto render --profile slides (make sure it has revealjs as format type)
-
-# We can do this on main or inside a branch.
-# Reminder: get into branch via git checkout BRANCH_NAME
