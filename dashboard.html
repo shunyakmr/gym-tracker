@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gym Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gym: {
+              950: "#050608",
+              900: "#0a0b10",
+              800: "#11131a",
+              700: "#1a1d26",
+              600: "#252934",
+              neon: "#22d3ee",
+              lime: "#a3e635",
+              rose: "#fb7185"
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 15% -10%, rgba(34, 211, 238, 0.12), transparent 35%),
+        radial-gradient(circle at 88% 8%, rgba(163, 230, 53, 0.08), transparent 30%),
+        linear-gradient(180deg, #050608 0%, #0b0e15 100%);
+    }
+
+    .panel {
+      background: linear-gradient(160deg, rgba(17, 19, 26, .92), rgba(10, 12, 18, .94));
+      border: 1px solid rgba(255, 255, 255, .08);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+    }
+
+    .day-cell {
+      min-height: 54px;
+    }
+  </style>
+</head>
+<body class="h-full text-zinc-100">
+  <main class="max-w-6xl mx-auto px-3 py-4 md:py-8">
+    <header class="mb-3 flex items-start justify-between gap-3">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Training Dashboard</h1>
+        <p class="text-zinc-400 text-sm">Consistency, streak, and pull-up progress from your saved logs.</p>
+      </div>
+      <a href="./index.html" class="shrink-0 rounded-md border border-cyan-500/70 px-3 py-1.5 text-xs text-cyan-300 hover:bg-cyan-500/10">Back To Tracker</a>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
+      <article class="panel rounded-xl p-3">
+        <p class="text-xs text-zinc-400">Current Streak</p>
+        <p id="currentStreak" class="text-2xl font-semibold text-lime-300">0 days</p>
+      </article>
+      <article class="panel rounded-xl p-3">
+        <p class="text-xs text-zinc-400">Longest Streak</p>
+        <p id="longestStreak" class="text-2xl font-semibold text-cyan-300">0 days</p>
+      </article>
+      <article class="panel rounded-xl p-3">
+        <p class="text-xs text-zinc-400">This Month</p>
+        <p id="monthDays" class="text-2xl font-semibold text-zinc-100">0 days</p>
+      </article>
+      <article class="panel rounded-xl p-3">
+        <p class="text-xs text-zinc-400">Last Gym Day</p>
+        <p id="lastGymDay" class="text-lg font-semibold text-zinc-100">-</p>
+      </article>
+    </section>
+
+    <section class="panel rounded-2xl p-4 mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-lg font-semibold text-cyan-300">Consistency Calendar</h2>
+        <p id="calendarMonth" class="text-sm text-zinc-400"></p>
+      </div>
+      <div class="grid grid-cols-7 gap-1 text-[11px] text-zinc-500 mb-1">
+        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+      </div>
+      <div id="calendarGrid" class="grid grid-cols-7 gap-1"></div>
+      <p class="text-xs text-zinc-500 mt-2">Neon cells = gym day with at least one log.</p>
+    </section>
+
+    <section class="panel rounded-2xl p-4">
+      <h2 class="text-lg font-semibold text-cyan-300 mb-2">Pull-Up & Daily Volume Trend (last 60 days)</h2>
+      <canvas id="progressChart" height="120"></canvas>
+    </section>
+  </main>
+
+  <script type="module" src="./js/dashboard.js"></script>
+</body>
+</html>

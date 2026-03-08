@@ -9,6 +9,7 @@ Mobile-first strength tracker with a dark neon gym theme, designed to run as a s
 - `js/defaultPlan.js`: your preloaded 4-day plan.
 - `js/plan.js`: plan normalization/helpers (robust to menu changes).
 - `js/storage.js`: local persistence + migration + export.
+- `dashboard.html` + `js/dashboard.js`: consistency calendar, streaks, and progress graph.
 
 ## How to use (daily)
 
@@ -19,6 +20,7 @@ Mobile-first strength tracker with a dark neon gym theme, designed to run as a s
    - `Weight`, `Reps`, `Sets`
 3. Tap `Save Entry`.
 4. Check exercise cards for current working weight and recent logs.
+5. Open `Dashboard` for consistency + streak + graph view.
 
 ## How to edit your menu safely
 
