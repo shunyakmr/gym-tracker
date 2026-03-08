@@ -53,7 +53,7 @@
   <main class="max-w-5xl mx-auto px-3 py-4 md:py-8">
     <header class="mb-4">
       <h1 class="text-2xl md:text-3xl font-bold tracking-tight">4-Day Strength Plan Tracker</h1>
-      <p class="text-zinc-400 text-sm md:text-base">Dark neon gym mode. Phone-first logging. Long-term storage with optional cloud sync.</p>
+      <p class="text-zinc-400 text-sm md:text-base">Dark neon gym mode. Phone-first logging. Local storage with manual export backup.</p>
       <div class="neon-rule mt-3"></div>
     </header>
 
@@ -83,9 +83,7 @@
           <input id="setsInput" type="number" min="1" step="1" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
         </div>
         <button id="saveLogBtn" class="rounded-lg bg-cyan-400 text-black font-semibold px-4 py-2 hover:bg-cyan-300 shadow-neon">Save Entry</button>
-        <button id="syncNowBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-cyan-500">Sync Pending</button>
       </div>
-      <p id="syncStatus" class="text-xs text-zinc-400 mt-2"></p>
     </section>
 
     <section class="panel rounded-2xl p-4 mb-3">
@@ -124,20 +122,10 @@
     </section>
 
     <section class="panel rounded-2xl p-4 mb-3">
-      <h2 class="text-lg font-semibold text-zinc-100">Data & Sync</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-        <div>
-          <label for="syncUrlInput" class="text-xs text-zinc-400">Sync Webhook URL (optional)</label>
-          <input id="syncUrlInput" type="url" placeholder="https://hook.example.com/your-endpoint" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
-        </div>
-        <button id="saveSyncBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-cyan-500 self-end">Save Sync URL</button>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-        <button id="exportBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-lime-500">Export Backup JSON</button>
-        <div>
-          <label for="importInput" class="text-xs text-zinc-400">Import Backup JSON</label>
-          <input id="importInput" type="file" accept="application/json" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
-        </div>
+      <h2 class="text-lg font-semibold text-zinc-100">Data</h2>
+      <div class="mt-2 flex items-center justify-between gap-2">
+        <span class="text-xs text-zinc-400">Export your data occasionally for backup.</span>
+        <button id="exportBtn" class="rounded-md bg-zinc-900 border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 hover:border-lime-500 hover:text-lime-300">Export Backup JSON</button>
       </div>
       <div class="mt-2">
         <button id="resetAllBtn" class="w-full rounded-lg bg-rose-500/20 border border-rose-500 text-rose-300 px-4 py-2 hover:bg-rose-500/30">Reset All Data</button>

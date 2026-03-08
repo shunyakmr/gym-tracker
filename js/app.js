@@ -1,6 +1,5 @@
 import { normalizePlan } from "./plan.js";
-import { loadState, saveState, getDefaultState, exportState, importStateFromFile, clearAllStoredData } from "./storage.js";
-import { enqueueSync, syncPending } from "./sync.js";
+import { loadState, saveState, getDefaultState, exportState, clearAllStoredData } from "./storage.js";
 
 let state = loadState();
 let activeDayTab = "all";
@@ -33,15 +32,10 @@ const el = {
   progressionRules: document.getElementById("progressionRules"),
   benchmarks: document.getElementById("benchmarks"),
   programInput: document.getElementById("programInput"),
-  syncUrlInput: document.getElementById("syncUrlInput"),
-  syncStatus: document.getElementById("syncStatus"),
   saveLogBtn: document.getElementById("saveLogBtn"),
-  syncNowBtn: document.getElementById("syncNowBtn"),
   saveProgramBtn: document.getElementById("saveProgramBtn"),
   resetProgramBtn: document.getElementById("resetProgramBtn"),
-  saveSyncBtn: document.getElementById("saveSyncBtn"),
   exportBtn: document.getElementById("exportBtn"),
-  importInput: document.getElementById("importInput"),
   resetAllBtn: document.getElementById("resetAllBtn")
 };
 
@@ -183,13 +177,7 @@ function renderProgramEditor() {
   el.programInput.value = JSON.stringify(state.plan, null, 2);
 }
 
-function renderSyncStatus() {
-  const pending = state.pendingSync.length;
-  const lastSynced = state.settings.lastSyncedAt ? formatDate(state.settings.lastSyncedAt) : "Never";
-  el.syncStatus.textContent = `Pending sync: ${pending} | Last synced: ${lastSynced}`;
-}
-
-async function saveLog() {
+function saveLog() {
   const day = findDay(el.daySelect.value);
   if (!day) return alert("Pick a day.");
 
@@ -218,8 +206,6 @@ async function saveLog() {
 
   state.logs.push(log);
   ex.currentWeight = weight;
-
-  enqueueSync(state, { event: "log_entry", loggedAt: log.createdAt, log });
   saveState(state);
 
   el.repsInput.value = "";
@@ -227,24 +213,6 @@ async function saveLog() {
 
   renderExerciseCards();
   renderProgramEditor();
-  renderSyncStatus();
-
-  await runSync();
-}
-
-async function runSync() {
-  const result = await syncPending(state);
-  saveState(state);
-  renderSyncStatus();
-  if (result.usedFallback) {
-    console.info("Sync used no-cors fallback mode for Apps Script.");
-  }
-  if (!result.skipped && result.synced === 0 && state.pendingSync.length > 0) {
-    const msg = result.lastError
-      ? `Sync did not complete: ${result.lastError}. Entries stay in pending queue.`
-      : "Sync did not complete. Entries stay in pending queue.";
-    alert(msg);
-  }
 }
 
 function saveProgram() {
@@ -271,7 +239,7 @@ function resetProgram() {
 function resetAllData() {
   const logsCount = Array.isArray(state.logs) ? state.logs.length : 0;
   const confirmed = window.confirm(
-    `Are you sure you want to reset all app data? This will delete your plan edits, ${logsCount} logs, and pending sync queue.`
+    `Are you sure you want to reset all app data? This will delete your plan edits and ${logsCount} logs.`
   );
   if (!confirmed) return;
   clearAllStoredData();
@@ -282,46 +250,19 @@ function resetAllData() {
   alert("All data has been reset.");
 }
 
-function saveSyncSettings() {
-  state.settings.syncUrl = el.syncUrlInput.value.trim();
-  saveState(state);
-  renderSyncStatus();
-  alert("Sync webhook URL saved.");
-}
-
-async function importBackupFile(file) {
-  try {
-    state = await importStateFromFile(file);
-    activeDayTab = "all";
-    saveState(state);
-    renderAll();
-    alert("Backup imported.");
-  } catch (error) {
-    alert(`Import failed: ${error.message}`);
-  }
-}
-
 function bindEvents() {
   el.daySelect.addEventListener("change", renderExerciseSelect);
   el.exerciseSelect.addEventListener("change", setWeightHint);
 
   el.saveLogBtn.addEventListener("click", saveLog);
-  el.syncNowBtn.addEventListener("click", runSync);
 
   el.saveProgramBtn.addEventListener("click", saveProgram);
   el.resetProgramBtn.addEventListener("click", resetProgram);
 
-  el.saveSyncBtn.addEventListener("click", saveSyncSettings);
   el.exportBtn.addEventListener("click", () => exportState(state));
   if (el.resetAllBtn) {
     el.resetAllBtn.addEventListener("click", resetAllData);
   }
-  el.importInput.addEventListener("change", async (event) => {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-    await importBackupFile(file);
-    el.importInput.value = "";
-  });
 }
 
 function renderAll() {
@@ -334,9 +275,6 @@ function renderAll() {
   renderDayTabs();
   renderExerciseCards();
   renderProgramEditor();
-
-  el.syncUrlInput.value = state.settings.syncUrl || "";
-  renderSyncStatus();
 }
 
 bindEvents();

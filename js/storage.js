@@ -8,12 +8,7 @@ export function getDefaultState() {
   const basePlan = deepClone(defaultPlan);
   return {
     plan: normalizePlan(basePlan, basePlan),
-    logs: [],
-    pendingSync: [],
-    settings: {
-      syncUrl: "",
-      lastSyncedAt: null
-    }
+    logs: []
   };
 }
 
@@ -55,12 +50,7 @@ export function migrateState(rawObj) {
   const current = getDefaultState();
   return {
     plan: normalizePlan(inputPlan, inputPlan),
-    logs: Array.isArray(rawObj.logs) ? rawObj.logs : [],
-    pendingSync: Array.isArray(rawObj.pendingSync) ? rawObj.pendingSync : [],
-    settings: {
-      syncUrl: rawObj.settings?.syncUrl || current.settings.syncUrl,
-      lastSyncedAt: rawObj.settings?.lastSyncedAt || current.settings.lastSyncedAt
-    }
+    logs: Array.isArray(rawObj.logs) ? rawObj.logs : current.logs
   };
 }
 
@@ -111,14 +101,4 @@ export function exportState(state) {
   a.download = `gym-tracker-backup-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
-}
-
-export async function importStateFromFile(file) {
-  const text = await file.text();
-  const parsed = JSON.parse(text);
-  const migrated = migrateState(parsed);
-  if (!migrated) {
-    throw new Error("Unsupported backup format.");
-  }
-  return migrated;
 }
