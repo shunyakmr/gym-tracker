@@ -80,21 +80,24 @@ function renderCalendar(daySet) {
   el.calendarGrid.innerHTML = cells.join("");
 }
 
-function buildDailySeries(items, daysBack = 60) {
-  const dailyTotal = new Map();
+function buildPullupSeries(items, daysBack = 60) {
+  const dailyPullups = new Map();
 
   for (const entry of items) {
+    const name = String(entry.exerciseName || "").toLowerCase();
+    const isPullup = name.includes("pull-up") || name.includes("pull up") || name.includes("pullup");
+    if (!isPullup) continue;
+
     const key = toLocalDateKey(entry.createdAt);
     const reps = Number(entry.reps) || 0;
     const sets = Number(entry.sets) || 0;
     const totalReps = reps * sets;
 
-    dailyTotal.set(key, (dailyTotal.get(key) || 0) + totalReps);
-
+    dailyPullups.set(key, (dailyPullups.get(key) || 0) + totalReps);
   }
 
   const labels = [];
-  const totals = [];
+  const pullups = [];
 
   const end = new Date();
   end.setHours(0, 0, 0, 0);
@@ -104,10 +107,10 @@ function buildDailySeries(items, daysBack = 60) {
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
     const key = toLocalDateKey(d);
     labels.push(`${d.getMonth() + 1}/${d.getDate()}`);
-    totals.push(dailyTotal.get(key) || 0);
+    pullups.push(dailyPullups.get(key) || 0);
   }
 
-  return { labels, totals };
+  return { labels, pullups };
 }
 
 function buildBenchWeightSeries(items, daysBack = 60) {
@@ -145,7 +148,7 @@ function buildBenchWeightSeries(items, daysBack = 60) {
 }
 
 function renderChart(items) {
-  const { labels, totals } = buildDailySeries(items, 60);
+  const { labels, pullups } = buildPullupSeries(items, 60);
   // Chart.js is loaded from CDN in dashboard.html.
   // eslint-disable-next-line no-undef
   new Chart(el.progressChart, {
@@ -154,13 +157,14 @@ function renderChart(items) {
       labels,
       datasets: [
         {
-          label: "Total Reps / Day",
-          data: totals,
+          label: "Pull-Ups Total Reps / Day",
+          data: pullups,
           borderColor: "#22d3ee",
           backgroundColor: "rgba(34,211,238,0.16)",
           borderWidth: 2,
           tension: 0.25,
-          pointRadius: 0,
+          pointRadius: 2,
+          spanGaps: false,
           fill: true
         }
       ]
