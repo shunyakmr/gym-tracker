@@ -96,6 +96,13 @@ export function saveState(state) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+export function clearAllStoredData() {
+  localStorage.removeItem(STORAGE_KEY);
+  for (const key of LEGACY_KEYS) {
+    localStorage.removeItem(key);
+  }
+}
+
 export function exportState(state) {
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);

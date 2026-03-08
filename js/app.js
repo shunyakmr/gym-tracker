@@ -1,5 +1,5 @@
 import { normalizePlan } from "./plan.js";
-import { loadState, saveState, getDefaultState, exportState, importStateFromFile } from "./storage.js";
+import { loadState, saveState, getDefaultState, exportState, importStateFromFile, clearAllStoredData } from "./storage.js";
 import { enqueueSync, syncPending } from "./sync.js";
 
 let state = loadState();
@@ -274,6 +274,7 @@ function resetAllData() {
     `Are you sure you want to reset all app data? This will delete your plan edits, ${logsCount} logs, and pending sync queue.`
   );
   if (!confirmed) return;
+  clearAllStoredData();
   state = getDefaultState();
   activeDayTab = "all";
   saveState(state);
@@ -312,7 +313,9 @@ function bindEvents() {
 
   el.saveSyncBtn.addEventListener("click", saveSyncSettings);
   el.exportBtn.addEventListener("click", () => exportState(state));
-  el.resetAllBtn.addEventListener("click", resetAllData);
+  if (el.resetAllBtn) {
+    el.resetAllBtn.addEventListener("click", resetAllData);
+  }
   el.importInput.addEventListener("change", async (event) => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
