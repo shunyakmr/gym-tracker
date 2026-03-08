@@ -3,6 +3,70 @@ import { deepClone, normalizePlan } from "./plan.js";
 
 const STORAGE_KEY = "gym-menu-tracker-v4";
 const LEGACY_KEYS = ["gym-menu-tracker-v3", "gym-menu-tracker-v2", "gym-tracker-v1"];
+const inMemoryStore = new Map();
+
+function getWindowStorage(kind) {
+  try {
+    if (typeof window === "undefined" || !window[kind]) return null;
+    const storage = window[kind];
+    const probeKey = "__gym_tracker_probe__";
+    storage.setItem(probeKey, "1");
+    storage.removeItem(probeKey);
+    return storage;
+  } catch (_) {
+    return null;
+  }
+}
+
+function getStorageBackends() {
+  const backends = [];
+  const local = getWindowStorage("localStorage");
+  const session = getWindowStorage("sessionStorage");
+  if (local) backends.push(local);
+  if (session) backends.push(session);
+  return backends;
+}
+
+function readFromBackends(key) {
+  for (const backend of getStorageBackends()) {
+    try {
+      const value = backend.getItem(key);
+      if (value !== null) return value;
+    } catch (_) {
+      // Ignore backend read failures and continue.
+    }
+  }
+  return inMemoryStore.has(key) ? inMemoryStore.get(key) : null;
+}
+
+function writeToBackends(key, value) {
+  let wrote = false;
+  for (const backend of getStorageBackends()) {
+    try {
+      backend.setItem(key, value);
+      wrote = true;
+    } catch (_) {
+      // Ignore backend write failures and continue.
+    }
+  }
+  if (!wrote) {
+    inMemoryStore.set(key, value);
+    return true;
+  }
+  inMemoryStore.delete(key);
+  return true;
+}
+
+function removeFromBackends(key) {
+  for (const backend of getStorageBackends()) {
+    try {
+      backend.removeItem(key);
+    } catch (_) {
+      // Ignore backend remove failures and continue.
+    }
+  }
+  inMemoryStore.delete(key);
+}
 
 export function getDefaultState() {
   const basePlan = deepClone(defaultPlan);
@@ -55,7 +119,7 @@ export function migrateState(rawObj) {
 }
 
 export function loadState() {
-  const currentRaw = localStorage.getItem(STORAGE_KEY);
+  const currentRaw = readFromBackends(STORAGE_KEY);
   if (currentRaw) {
     try {
       const migrated = migrateState(JSON.parse(currentRaw));
@@ -66,12 +130,12 @@ export function loadState() {
   }
 
   for (const key of LEGACY_KEYS) {
-    const raw = localStorage.getItem(key);
+    const raw = readFromBackends(key);
     if (!raw) continue;
     try {
       const migrated = migrateState(JSON.parse(raw));
       if (migrated) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        writeToBackends(STORAGE_KEY, JSON.stringify(migrated));
         return migrated;
       }
     } catch (_) {
@@ -83,13 +147,13 @@ export function loadState() {
 }
 
 export function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  writeToBackends(STORAGE_KEY, JSON.stringify(state));
 }
 
 export function clearAllStoredData() {
-  localStorage.removeItem(STORAGE_KEY);
+  removeFromBackends(STORAGE_KEY);
   for (const key of LEGACY_KEYS) {
-    localStorage.removeItem(key);
+    removeFromBackends(key);
   }
 }
 

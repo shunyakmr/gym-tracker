@@ -1,7 +1,38 @@
 const THEME_KEY = "gym-tracker-theme";
 
+function readThemeValue() {
+  try {
+    const local = window.localStorage?.getItem(THEME_KEY);
+    if (local) return local;
+  } catch (_) {
+    // Ignore localStorage access failures.
+  }
+  try {
+    return window.sessionStorage?.getItem(THEME_KEY);
+  } catch (_) {
+    return null;
+  }
+}
+
+function writeThemeValue(theme) {
+  let wrote = false;
+  try {
+    window.localStorage?.setItem(THEME_KEY, theme);
+    wrote = true;
+  } catch (_) {
+    // Ignore localStorage access failures.
+  }
+  try {
+    window.sessionStorage?.setItem(THEME_KEY, theme);
+    wrote = true;
+  } catch (_) {
+    // Ignore sessionStorage access failures.
+  }
+  return wrote;
+}
+
 function resolveTheme() {
-  const saved = localStorage.getItem(THEME_KEY);
+  const saved = readThemeValue();
   if (saved === "light" || saved === "dark") return saved;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
@@ -17,7 +48,7 @@ function updateToggleState(button, theme) {
 export function applyTheme(theme) {
   const finalTheme = theme === "light" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", finalTheme);
-  localStorage.setItem(THEME_KEY, finalTheme);
+  writeThemeValue(finalTheme);
 }
 
 export function initThemeToggle(button) {

@@ -2,11 +2,13 @@
 
 Mobile-first strength tracker with a dark neon gym theme, designed to run as a static site on GitHub Pages.
 
+Live website: https://shunyakmr.github.io/gym-tracker/
+
 ## File structure (modular)
 
 - `index.html`: UI shell + Tailwind theme.
 - `js/app.js`: app wiring, rendering, event handlers.
-- `js/defaultPlan.js`: your preloaded 4-day plan.
+- `js/defaultPlan.js`: preloaded minimal sample workout.
 - `js/plan.js`: plan normalization/helpers (robust to menu changes).
 - `js/storage.js`: local persistence + migration + export.
 - `dashboard.html` + `js/dashboard.js`: consistency calendar, streaks, and progress graph.
