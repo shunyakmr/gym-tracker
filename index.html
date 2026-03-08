@@ -128,7 +128,11 @@
       <h2 class="text-lg font-semibold text-zinc-100">Data</h2>
       <div class="mt-2 flex items-center justify-between gap-2">
         <span class="text-xs text-zinc-400">Export your data occasionally for backup.</span>
-        <button id="exportBtn" class="rounded-md bg-zinc-900 border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 hover:border-lime-500 hover:text-lime-300">Export Backup JSON</button>
+        <div class="flex items-center gap-2">
+          <input id="importFileInput" type="file" accept="application/json,.json" class="hidden">
+          <button id="importBtn" class="rounded-md bg-zinc-900 border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 hover:border-cyan-500 hover:text-cyan-300">Import Backup JSON</button>
+          <button id="exportBtn" class="rounded-md bg-zinc-900 border border-zinc-700 px-2.5 py-1.5 text-xs text-zinc-300 hover:border-lime-500 hover:text-lime-300">Export Backup JSON</button>
+        </div>
       </div>
       <div class="mt-2">
         <button id="resetAllBtn" class="w-full rounded-lg bg-rose-500/20 border border-rose-500 text-rose-300 px-4 py-2 hover:bg-rose-500/30">Reset All Data</button>

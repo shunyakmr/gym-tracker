@@ -1,5 +1,5 @@
 import { normalizePlan } from "./plan.js";
-import { loadState, saveState, getDefaultState, exportState, clearAllStoredData } from "./storage.js";
+import { loadState, saveState, getDefaultState, exportState, clearAllStoredData, migrateState } from "./storage.js";
 
 let state = loadState();
 let activeDayTab = "all";
@@ -35,6 +35,8 @@ const el = {
   saveLogBtn: document.getElementById("saveLogBtn"),
   saveProgramBtn: document.getElementById("saveProgramBtn"),
   resetProgramBtn: document.getElementById("resetProgramBtn"),
+  importBtn: document.getElementById("importBtn"),
+  importFileInput: document.getElementById("importFileInput"),
   exportBtn: document.getElementById("exportBtn"),
   resetAllBtn: document.getElementById("resetAllBtn")
 };
@@ -250,6 +252,38 @@ function resetAllData() {
   alert("All data has been reset.");
 }
 
+function importBackupFromFile(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(String(reader.result || ""));
+      const migrated = migrateState(parsed);
+      if (!migrated) {
+        alert("Invalid backup JSON. Use an exported backup file.");
+        return;
+      }
+      const confirmed = window.confirm(
+        `Import backup and replace current data?\nThis will replace your plan and ${Array.isArray(state.logs) ? state.logs.length : 0} existing logs.`
+      );
+      if (!confirmed) return;
+      state = migrated;
+      activeDayTab = "all";
+      saveState(state);
+      renderAll();
+      alert("Backup imported.");
+    } catch (error) {
+      alert(`Invalid JSON file: ${error.message}`);
+    } finally {
+      el.importFileInput.value = "";
+    }
+  };
+  reader.onerror = () => {
+    alert("Could not read the selected file.");
+    el.importFileInput.value = "";
+  };
+  reader.readAsText(file);
+}
+
 function bindEvents() {
   el.daySelect.addEventListener("change", renderExerciseSelect);
   el.exerciseSelect.addEventListener("change", setWeightHint);
@@ -259,6 +293,14 @@ function bindEvents() {
   el.saveProgramBtn.addEventListener("click", saveProgram);
   el.resetProgramBtn.addEventListener("click", resetProgram);
 
+  if (el.importBtn && el.importFileInput) {
+    el.importBtn.addEventListener("click", () => el.importFileInput.click());
+    el.importFileInput.addEventListener("change", () => {
+      const [file] = el.importFileInput.files || [];
+      if (!file) return;
+      importBackupFromFile(file);
+    });
+  }
   el.exportBtn.addEventListener("click", () => exportState(state));
   if (el.resetAllBtn) {
     el.resetAllBtn.addEventListener("click", resetAllData);
