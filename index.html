@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gym Menu Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gym: {
+              950: "#050608",
+              900: "#0a0b10",
+              800: "#11131a",
+              700: "#1a1d26",
+              600: "#252934",
+              neon: "#22d3ee",
+              lime: "#a3e635",
+              rose: "#fb7185"
+            }
+          },
+          boxShadow: {
+            neon: "0 0 24px rgba(34,211,238,.35)",
+            steel: "0 14px 34px rgba(0,0,0,.5)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 20% -10%, rgba(34, 211, 238, 0.12), transparent 35%),
+        radial-gradient(circle at 90% 10%, rgba(163, 230, 53, 0.08), transparent 30%),
+        linear-gradient(180deg, #050608 0%, #0b0e15 100%);
+    }
+
+    .panel {
+      background: linear-gradient(160deg, rgba(17, 19, 26, .92), rgba(10, 12, 18, .94));
+      border: 1px solid rgba(255, 255, 255, .08);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+    }
+
+    .neon-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 211, 238, .7), transparent);
+    }
+  </style>
+</head>
+<body class="h-full text-zinc-100">
+  <main class="max-w-5xl mx-auto px-3 py-4 md:py-8">
+    <header class="mb-4">
+      <h1 class="text-2xl md:text-3xl font-bold tracking-tight">4-Day Strength Plan Tracker</h1>
+      <p class="text-zinc-400 text-sm md:text-base">Dark neon gym mode. Phone-first logging. Long-term storage with optional cloud sync.</p>
+      <div class="neon-rule mt-3"></div>
+    </header>
+
+    <section class="panel rounded-2xl p-4 mb-3">
+      <h2 class="text-lg font-semibold text-cyan-300">Quick Log</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mt-2">
+        <div>
+          <label for="daySelect" class="text-xs text-zinc-400">Day</label>
+          <select id="daySelect" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2"></select>
+        </div>
+        <div>
+          <label for="exerciseSelect" class="text-xs text-zinc-400">Exercise</label>
+          <select id="exerciseSelect" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2"></select>
+        </div>
+        <div>
+          <label for="weightInput" class="text-xs text-zinc-400">Weight (kg)</label>
+          <input id="weightInput" type="number" min="0" step="0.5" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+        </div>
+        <div>
+          <label for="repsInput" class="text-xs text-zinc-400">Reps</label>
+          <input id="repsInput" type="number" min="1" step="1" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+        <div>
+          <label for="setsInput" class="text-xs text-zinc-400">Sets</label>
+          <input id="setsInput" type="number" min="1" step="1" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+        </div>
+        <button id="saveLogBtn" class="rounded-lg bg-cyan-400 text-black font-semibold px-4 py-2 hover:bg-cyan-300 shadow-neon">Save Entry</button>
+        <button id="syncNowBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-cyan-500">Sync Pending</button>
+      </div>
+      <p id="syncStatus" class="text-xs text-zinc-400 mt-2"></p>
+    </section>
+
+    <section class="panel rounded-2xl p-4 mb-3">
+      <h2 class="text-lg font-semibold text-zinc-100">Program View</h2>
+      <p class="text-xs text-zinc-400">Select a day tab to focus, or keep all visible.</p>
+      <div id="dayTabs" class="flex flex-wrap gap-2 mt-2"></div>
+    </section>
+
+    <section id="exerciseList"></section>
+
+    <section class="panel rounded-2xl p-4 mb-3">
+      <details>
+        <summary class="cursor-pointer font-semibold text-cyan-300">Global Rules</summary>
+        <ul id="globalRules" class="list-disc pl-5 mt-2 space-y-1 text-sm"></ul>
+      </details>
+      <details class="mt-2">
+        <summary class="cursor-pointer font-semibold text-cyan-300">Progression Rules</summary>
+        <ul id="progressionRules" class="list-disc pl-5 mt-2 space-y-1 text-sm"></ul>
+      </details>
+      <details class="mt-2">
+        <summary class="cursor-pointer font-semibold text-cyan-300">6-Month Benchmarks</summary>
+        <ul id="benchmarks" class="list-disc pl-5 mt-2 space-y-1 text-sm"></ul>
+      </details>
+    </section>
+
+    <section class="panel rounded-2xl p-4 mb-3">
+      <details>
+        <summary class="cursor-pointer font-semibold text-cyan-300">Menu Editor (JSON)</summary>
+        <p class="text-xs text-zinc-400 mt-2">Edit your menu safely. IDs/weights are normalized for resilience when structure changes.</p>
+        <textarea id="programInput" class="w-full mt-2 rounded-xl bg-gym-900 border border-zinc-700 p-3 min-h-[220px] text-xs font-mono"></textarea>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+          <button id="saveProgramBtn" class="rounded-lg bg-lime-400 text-black font-semibold px-4 py-2 hover:bg-lime-300">Save Program JSON</button>
+          <button id="resetProgramBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-rose-400">Reset To Original Plan</button>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel rounded-2xl p-4 mb-3">
+      <h2 class="text-lg font-semibold text-zinc-100">Data & Sync</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+        <div>
+          <label for="syncUrlInput" class="text-xs text-zinc-400">Google Apps Script Web App URL (optional)</label>
+          <input id="syncUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+        </div>
+        <button id="saveSyncBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-cyan-500 self-end">Save Sync URL</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+        <button id="exportBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 hover:border-lime-500">Export Backup JSON</button>
+        <div>
+          <label for="importInput" class="text-xs text-zinc-400">Import Backup JSON</label>
+          <input id="importInput" type="file" accept="application/json" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
