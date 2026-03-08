@@ -41,7 +41,8 @@ const el = {
   resetProgramBtn: document.getElementById("resetProgramBtn"),
   saveSyncBtn: document.getElementById("saveSyncBtn"),
   exportBtn: document.getElementById("exportBtn"),
-  importInput: document.getElementById("importInput")
+  importInput: document.getElementById("importInput"),
+  resetAllBtn: document.getElementById("resetAllBtn")
 };
 
 function formatDate(iso) {
@@ -267,6 +268,19 @@ function resetProgram() {
   renderAll();
 }
 
+function resetAllData() {
+  const logsCount = Array.isArray(state.logs) ? state.logs.length : 0;
+  const confirmed = window.confirm(
+    `Are you sure you want to reset all app data? This will delete your plan edits, ${logsCount} logs, and pending sync queue.`
+  );
+  if (!confirmed) return;
+  state = getDefaultState();
+  activeDayTab = "all";
+  saveState(state);
+  renderAll();
+  alert("All data has been reset.");
+}
+
 function saveSyncSettings() {
   state.settings.syncUrl = el.syncUrlInput.value.trim();
   saveState(state);
@@ -298,6 +312,7 @@ function bindEvents() {
 
   el.saveSyncBtn.addEventListener("click", saveSyncSettings);
   el.exportBtn.addEventListener("click", () => exportState(state));
+  el.resetAllBtn.addEventListener("click", resetAllData);
   el.importInput.addEventListener("change", async (event) => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
