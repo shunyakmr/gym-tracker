@@ -36,6 +36,7 @@ const el = {
   themeToggle: document.getElementById("themeToggle"),
   programInput: document.getElementById("programInput"),
   saveLogBtn: document.getElementById("saveLogBtn"),
+  redoLogBtn: document.getElementById("redoLogBtn"),
   saveProgramBtn: document.getElementById("saveProgramBtn"),
   resetProgramBtn: document.getElementById("resetProgramBtn"),
   importBtn: document.getElementById("importBtn"),
@@ -182,6 +183,21 @@ function renderProgramEditor() {
   el.programInput.value = JSON.stringify(state.plan, null, 2);
 }
 
+function findLatestLogForExercise(dayId, exId) {
+  for (let idx = state.logs.length - 1; idx >= 0; idx -= 1) {
+    const log = state.logs[idx];
+    if (log.dayId === dayId && log.exerciseId === exId) {
+      return log;
+    }
+  }
+  return null;
+}
+
+function updateRedoButton() {
+  if (!el.redoLogBtn) return;
+  el.redoLogBtn.disabled = state.logs.length === 0;
+}
+
 function saveLog() {
   const day = findDay(el.daySelect.value);
   if (!day) return alert("Pick a day.");
@@ -218,6 +234,41 @@ function saveLog() {
 
   renderExerciseCards();
   renderProgramEditor();
+  updateRedoButton();
+}
+
+function redoLastLog() {
+  if (!state.logs.length) {
+    return alert("No saved entry to redo.");
+  }
+
+  const log = state.logs.pop();
+  const day = findDay(log.dayId);
+  const ex = day?.exercises.find((item) => item.id === log.exerciseId) || null;
+
+  if (day) {
+    el.daySelect.value = day.id;
+    renderExerciseSelect();
+  }
+  if (ex) {
+    el.exerciseSelect.value = ex.id;
+  }
+
+  el.weightInput.value = log.weight;
+  el.repsInput.value = log.reps;
+  el.setsInput.value = log.sets;
+
+  if (ex) {
+    const previousLog = findLatestLogForExercise(log.dayId, log.exerciseId);
+    if (previousLog) {
+      ex.currentWeight = previousLog.weight;
+    }
+  }
+
+  saveState(state);
+  renderExerciseCards();
+  renderProgramEditor();
+  updateRedoButton();
 }
 
 function saveProgram() {
@@ -292,6 +343,9 @@ function bindEvents() {
   el.exerciseSelect.addEventListener("change", setWeightHint);
 
   el.saveLogBtn.addEventListener("click", saveLog);
+  if (el.redoLogBtn) {
+    el.redoLogBtn.addEventListener("click", redoLastLog);
+  }
 
   el.saveProgramBtn.addEventListener("click", saveProgram);
   el.resetProgramBtn.addEventListener("click", resetProgram);
@@ -324,6 +378,7 @@ function renderAll() {
   renderDayTabs();
   renderExerciseCards();
   renderProgramEditor();
+  updateRedoButton();
 }
 
 bindEvents();
