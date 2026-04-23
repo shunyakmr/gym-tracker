@@ -194,8 +194,6 @@ function renderExerciseCards() {
       card.className = "rounded-xl border border-zinc-700 bg-zinc-950 p-3 mb-2";
       card.innerHTML = `
         <h3 class="text-cyan-300 font-medium mb-1">${ex.name}</h3>
-        <p class="text-xs text-zinc-400">Target: ${ex.target || "-"}</p>
-        <p class="text-xs text-zinc-400">Start: ${ex.prescribed || "-"}</p>
         <p class="text-sm text-zinc-200 mt-1">Current weight: <span class="text-lime-300 font-semibold">${ex.currentWeight} kg</span></p>
         <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 mt-2">
           <div>
