@@ -94,9 +94,14 @@ function buildPullupSeries(items, daysBack = 60) {
     if (!isPullup) continue;
 
     const key = toLocalDateKey(entry.createdAt);
-    const reps = Number(entry.reps) || 0;
-    const sets = Number(entry.sets) || 0;
-    const totalReps = reps * sets;
+    let totalReps = Number(entry.totalReps);
+    if (!Number.isFinite(totalReps)) {
+      if (Array.isArray(entry.groups) && entry.groups.length) {
+        totalReps = entry.groups.reduce((sum, g) => sum + (Number(g.reps) || 0) * (Number(g.sets) || 0), 0);
+      } else {
+        totalReps = (Number(entry.reps) || 0) * (Number(entry.sets) || 0);
+      }
+    }
 
     dailyPullups.set(key, (dailyPullups.get(key) || 0) + totalReps);
   }
@@ -212,7 +217,7 @@ function renderBenchChart(items) {
           borderWidth: 2,
           tension: 0.25,
           pointRadius: 2,
-          spanGaps: false,
+          spanGaps: true,
           fill: true
         }
       ]

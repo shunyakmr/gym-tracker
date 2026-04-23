@@ -151,7 +151,7 @@
 
     <section class="panel rounded-2xl p-4 mb-3">
       <h2 class="text-lg font-semibold text-cyan-300">Quick Log</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mt-2">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
         <div>
           <label for="daySelect" class="text-xs text-zinc-400">Day</label>
           <select id="daySelect" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2"></select>
@@ -164,16 +164,15 @@
           <label for="weightInput" class="text-xs text-zinc-400">Weight (kg)</label>
           <input id="weightInput" type="number" min="0" step="0.5" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
         </div>
-        <div>
-          <label for="repsInput" class="text-xs text-zinc-400">Reps</label>
-          <input id="repsInput" type="number" min="1" step="1" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
-        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
-        <div>
-          <label for="setsInput" class="text-xs text-zinc-400">Sets</label>
-          <input id="setsInput" type="number" min="1" step="1" class="w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+      <div class="mt-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-zinc-400">Reps &amp; Sets</span>
+          <button id="addGroupBtn" type="button" class="rounded-md border border-zinc-700 px-2 py-1 text-xs text-zinc-300 hover:border-cyan-500 hover:text-cyan-300">+ Add reps/sets</button>
         </div>
+        <div id="groupsContainer" class="mt-2 space-y-2"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
         <button id="saveLogBtn" class="rounded-lg bg-cyan-400 text-black font-semibold px-4 py-2 hover:bg-cyan-300 shadow-neon">Save Entry</button>
         <button id="redoLogBtn" class="rounded-lg bg-zinc-900 border border-zinc-700 px-4 py-2 text-zinc-300 hover:border-amber-400 hover:text-amber-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Redo Last Entry</button>
       </div>
@@ -187,22 +186,7 @@
 
     <section id="exerciseList"></section>
 
-    <section class="panel rounded-2xl p-4 mb-3">
-      <details>
-        <summary class="cursor-pointer font-semibold text-cyan-300">Global Rules</summary>
-        <ul id="globalRules" class="list-disc pl-5 mt-2 space-y-1 text-sm"></ul>
-      </details>
-      <details class="mt-2">
-        <summary class="cursor-pointer font-semibold text-cyan-300">Progression Rules</summary>
-        <ul id="progressionRules" class="list-disc pl-5 mt-2 space-y-1 text-sm"></ul>
-      </details>
-      <details class="mt-2">
-        <summary class="cursor-pointer font-semibold text-cyan-300">6-Month Benchmarks</summary>
-        <ul id="benchmarks" class="list-disc pl-5 mt-2 space-y-1 text-sm"></ul>
-      </details>
-    </section>
-
-    <section class="panel rounded-2xl p-4 mb-3">
+<section class="panel rounded-2xl p-4 mb-3">
       <details>
         <summary class="cursor-pointer font-semibold text-cyan-300">Menu Editor (JSON)</summary>
         <p class="text-xs text-zinc-400 mt-2">Edit your menu safely. Set a custom title with top-level "title". IDs/weights are normalized for resilience when structure changes.</p>
@@ -230,6 +214,6 @@
     </section>
   </main>
 
-  <script type="module" src="./js/app.js"></script>
+  <script type="module" src="./js/app.js?v=2026-04-23-groups"></script>
 </body>
 </html>

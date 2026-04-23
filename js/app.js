@@ -1,9 +1,13 @@
 import { normalizePlan } from "./plan.js";
 import { loadState, saveState, getDefaultState, exportState, clearAllStoredData, migrateState } from "./storage.js";
+import { defaultPlan } from "./defaultPlan.js";
+import { deepClone } from "./plan.js";
 import { initThemeToggle } from "./theme.js";
 
 let state = loadState();
 let activeDayTab = "all";
+
+const WEEKLY_PLAN_MIGRATION_FLAG = "weekly-plan-2026-04";
 
 function applyOneOffPlanMigrations() {
   let changed = false;
@@ -16,6 +20,15 @@ function applyOneOffPlanMigrations() {
       changed = true;
     }
   }
+  if (!Array.isArray(state.appliedMigrations)) {
+    state.appliedMigrations = [];
+  }
+  if (!state.appliedMigrations.includes(WEEKLY_PLAN_MIGRATION_FLAG)) {
+    const fresh = deepClone(defaultPlan);
+    state.plan = normalizePlan(fresh, state.plan);
+    state.appliedMigrations.push(WEEKLY_PLAN_MIGRATION_FLAG);
+    changed = true;
+  }
   if (changed) {
     saveState(state);
   }
@@ -25,13 +38,10 @@ const el = {
   daySelect: document.getElementById("daySelect"),
   exerciseSelect: document.getElementById("exerciseSelect"),
   weightInput: document.getElementById("weightInput"),
-  repsInput: document.getElementById("repsInput"),
-  setsInput: document.getElementById("setsInput"),
+  groupsContainer: document.getElementById("groupsContainer"),
+  addGroupBtn: document.getElementById("addGroupBtn"),
   dayTabs: document.getElementById("dayTabs"),
   exerciseList: document.getElementById("exerciseList"),
-  globalRules: document.getElementById("globalRules"),
-  progressionRules: document.getElementById("progressionRules"),
-  benchmarks: document.getElementById("benchmarks"),
   appTitle: document.getElementById("appTitle"),
   themeToggle: document.getElementById("themeToggle"),
   programInput: document.getElementById("programInput"),
@@ -71,8 +81,59 @@ function logsForExercise(day, ex) {
     .reverse();
 }
 
-function renderList(target, entries) {
-  target.innerHTML = (entries || []).map((x) => `<li class="text-zinc-300">${x}</li>`).join("");
+function logGroups(log) {
+  if (Array.isArray(log.groups) && log.groups.length) return log.groups;
+  const reps = Number(log.reps) || 0;
+  const sets = Number(log.sets) || 0;
+  return reps && sets ? [{ reps, sets }] : [];
+}
+
+function formatGroups(groups) {
+  if (!groups.length) return "-";
+  return groups.map((g) => `${g.sets}x${g.reps}`).join(", ");
+}
+
+function addGroupRow(reps = "", sets = "") {
+  const row = document.createElement("div");
+  row.className = "group-row grid grid-cols-[1fr_1fr_auto] gap-2";
+  row.innerHTML = `
+    <div>
+      <label class="text-xs text-zinc-400">Reps</label>
+      <input type="number" min="1" step="1" value="${reps}" class="reps-input w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+    </div>
+    <div>
+      <label class="text-xs text-zinc-400">Sets</label>
+      <input type="number" min="1" step="1" value="${sets}" class="sets-input w-full rounded-lg bg-gym-800 border border-zinc-700 px-3 py-2">
+    </div>
+    <button type="button" class="remove-group self-end rounded-md border border-zinc-700 px-2 py-2 text-xs text-zinc-400 hover:border-rose-500 hover:text-rose-300" aria-label="Remove">X</button>
+  `;
+  row.querySelector(".remove-group").addEventListener("click", () => {
+    if (el.groupsContainer.querySelectorAll(".group-row").length <= 1) {
+      row.querySelector(".reps-input").value = "";
+      row.querySelector(".sets-input").value = "";
+      return;
+    }
+    row.remove();
+  });
+  el.groupsContainer.appendChild(row);
+}
+
+function resetGroupRows() {
+  el.groupsContainer.innerHTML = "";
+  addGroupRow();
+}
+
+function collectGroups() {
+  const groups = [];
+  for (const row of el.groupsContainer.querySelectorAll(".group-row")) {
+    const reps = Number(row.querySelector(".reps-input").value);
+    const sets = Number(row.querySelector(".sets-input").value);
+    if (!Number.isFinite(reps) || reps <= 0 || !Number.isFinite(sets) || sets <= 0) {
+      return null;
+    }
+    groups.push({ reps, sets });
+  }
+  return groups;
 }
 
 function renderDaySelect() {
@@ -126,7 +187,7 @@ function renderExerciseCards() {
     for (const ex of day.exercises) {
       const logs = logsForExercise(day, ex);
       const history = logs.length
-        ? logs.map((h) => `<li>${h.weight}kg x ${h.reps} reps x ${h.sets} sets - ${formatDate(h.createdAt)}</li>`).join("")
+        ? logs.map((h) => `<li>${h.weight}kg - ${formatGroups(logGroups(h))} - ${formatDate(h.createdAt)}</li>`).join("")
         : "<li>No history yet</li>";
 
       const card = document.createElement("article");
@@ -206,12 +267,17 @@ function saveLog() {
   if (!ex) return alert("Pick an exercise.");
 
   const weight = Number(el.weightInput.value);
-  const reps = Number(el.repsInput.value);
-  const sets = Number(el.setsInput.value);
-
-  if (!Number.isFinite(weight) || weight < 0 || !Number.isFinite(reps) || reps <= 0 || !Number.isFinite(sets) || sets <= 0) {
-    return alert("Enter valid weight, reps and sets.");
+  if (!Number.isFinite(weight) || weight < 0) {
+    return alert("Enter a valid weight.");
   }
+
+  const groups = collectGroups();
+  if (!groups || !groups.length) {
+    return alert("Enter valid reps and sets for each group.");
+  }
+
+  const totalSets = groups.reduce((sum, g) => sum + g.sets, 0);
+  const totalReps = groups.reduce((sum, g) => sum + g.reps * g.sets, 0);
 
   const log = {
     createdAt: new Date().toISOString(),
@@ -221,16 +287,17 @@ function saveLog() {
     exerciseName: ex.name,
     target: ex.target || "",
     weight,
-    reps,
-    sets
+    groups,
+    reps: groups[0].reps,
+    sets: totalSets,
+    totalReps
   };
 
   state.logs.push(log);
   ex.currentWeight = weight;
   saveState(state);
 
-  el.repsInput.value = "";
-  el.setsInput.value = "";
+  resetGroupRows();
 
   renderExerciseCards();
   renderProgramEditor();
@@ -255,8 +322,13 @@ function redoLastLog() {
   }
 
   el.weightInput.value = log.weight;
-  el.repsInput.value = log.reps;
-  el.setsInput.value = log.sets;
+  el.groupsContainer.innerHTML = "";
+  const groups = logGroups(log);
+  if (groups.length) {
+    for (const g of groups) addGroupRow(g.reps, g.sets);
+  } else {
+    addGroupRow();
+  }
 
   if (ex) {
     const previousLog = findLatestLogForExercise(log.dayId, log.exerciseId);
@@ -339,16 +411,13 @@ function importBackupFromFile(file) {
 }
 
 function bindEvents() {
-  el.daySelect.addEventListener("change", renderExerciseSelect);
-  el.exerciseSelect.addEventListener("change", setWeightHint);
-
-  el.saveLogBtn.addEventListener("click", saveLog);
-  if (el.redoLogBtn) {
-    el.redoLogBtn.addEventListener("click", redoLastLog);
-  }
-
-  el.saveProgramBtn.addEventListener("click", saveProgram);
-  el.resetProgramBtn.addEventListener("click", resetProgram);
+  el.daySelect?.addEventListener("change", renderExerciseSelect);
+  el.exerciseSelect?.addEventListener("change", setWeightHint);
+  el.addGroupBtn?.addEventListener("click", () => addGroupRow());
+  el.saveLogBtn?.addEventListener("click", saveLog);
+  el.redoLogBtn?.addEventListener("click", redoLastLog);
+  el.saveProgramBtn?.addEventListener("click", saveProgram);
+  el.resetProgramBtn?.addEventListener("click", resetProgram);
 
   if (el.importBtn && el.importFileInput) {
     el.importBtn.addEventListener("click", () => el.importFileInput.click());
@@ -358,10 +427,8 @@ function bindEvents() {
       importBackupFromFile(file);
     });
   }
-  el.exportBtn.addEventListener("click", () => exportState(state));
-  if (el.resetAllBtn) {
-    el.resetAllBtn.addEventListener("click", resetAllData);
-  }
+  el.exportBtn?.addEventListener("click", () => exportState(state));
+  el.resetAllBtn?.addEventListener("click", resetAllData);
 }
 
 function renderAll() {
@@ -369,9 +436,6 @@ function renderAll() {
     el.appTitle.textContent = state.plan.title || "Training Tracker";
   }
   document.title = state.plan.title || "Training Tracker";
-  renderList(el.globalRules, state.plan.globalRules || []);
-  renderList(el.progressionRules, state.plan.progressionRules || []);
-  renderList(el.benchmarks, state.plan.benchmarks || []);
 
   renderDaySelect();
   renderExerciseSelect();
@@ -384,4 +448,5 @@ function renderAll() {
 bindEvents();
 initThemeToggle(el.themeToggle);
 applyOneOffPlanMigrations();
+resetGroupRows();
 renderAll();

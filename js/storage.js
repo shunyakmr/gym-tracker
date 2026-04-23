@@ -72,7 +72,8 @@ export function getDefaultState() {
   const basePlan = deepClone(defaultPlan);
   return {
     plan: normalizePlan(basePlan, basePlan),
-    logs: []
+    logs: [],
+    appliedMigrations: []
   };
 }
 
@@ -114,7 +115,8 @@ export function migrateState(rawObj) {
   const current = getDefaultState();
   return {
     plan: normalizePlan(inputPlan, inputPlan),
-    logs: Array.isArray(rawObj.logs) ? rawObj.logs : current.logs
+    logs: Array.isArray(rawObj.logs) ? rawObj.logs : current.logs,
+    appliedMigrations: Array.isArray(rawObj.appliedMigrations) ? rawObj.appliedMigrations : []
   };
 }
 

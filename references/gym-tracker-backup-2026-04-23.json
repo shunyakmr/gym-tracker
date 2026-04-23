@@ -1,0 +1,1313 @@
+{
+  "plan": {
+    "title": "My 4-Day Strengthening Tracker",
+    "globalRules": [
+      "RPE 6-7 (2-3 reps in reserve)",
+      "2-3 sec controlled eccentrics",
+      "Add load slowly",
+      "Never grind reps"
+    ],
+    "progressionRules": [
+      "Main lifts: progress one variable at a time (+2.5 kg every 1-2 weeks OR +1 rep per set).",
+      "Pull-Up strength day: when 5x4 clean reps, add +2.5 kg weighted.",
+      "Pull-Up volume day: start 18-20 total reps, add +2-3 weekly to 30 reps.",
+      "RDL: add +2.5 kg weekly if form is clean (short target 60x5, 6-month target 80-90x5).",
+      "DB Bench: 15 kg x 3x6 toward 20 kg in ~8-10 weeks, longer term 22-24 kg.",
+      "Shoulder Press: add +1-2 kg every 2-3 weeks toward 18-20 kg."
+    ],
+    "benchmarks": [
+      "Pull-Ups: 12 reps",
+      "Weighted Pull-Up: +10 kg for 3",
+      "RDL: 90 kg for 5",
+      "DB Bench: 24 kg DBs",
+      "Shoulder Press: 20 kg DBs"
+    ],
+    "days": [
+      {
+        "id": "day1",
+        "name": "Day 1 - Lower + Pull Strength",
+        "exercises": [
+          {
+            "id": "rdl-d1",
+            "name": "Romanian Deadlift",
+            "target": "3 x 5",
+            "prescribed": "45 kg",
+            "currentWeight": 70
+          },
+          {
+            "id": "pullup-strength",
+            "name": "Pull-Ups (Strength Focus)",
+            "target": "5 x 3",
+            "prescribed": "Bodyweight 65 kg",
+            "currentWeight": 70
+          },
+          {
+            "id": "chest-row",
+            "name": "Chest-Supported Row",
+            "target": "3 x 8 (pause at top)",
+            "prescribed": "12 kg DBs",
+            "currentWeight": 15
+          },
+          {
+            "id": "knee-raise",
+            "name": "Hanging Knee Raise",
+            "target": "3 x 8-10",
+            "prescribed": "Bodyweight",
+            "currentWeight": 0
+          }
+        ]
+      },
+      {
+        "id": "day2",
+        "name": "Day 2 - Push + Upper Back",
+        "exercises": [
+          {
+            "id": "db-bench",
+            "name": "DB Bench Press",
+            "target": "3 x 6",
+            "prescribed": "15 kg DBs",
+            "currentWeight": 20
+          },
+          {
+            "id": "db-shoulder",
+            "name": "Seated DB Shoulder Press",
+            "target": "3 x 6",
+            "prescribed": "10-12 kg DBs",
+            "currentWeight": 40
+          },
+          {
+            "id": "face-pull",
+            "name": "Face Pull",
+            "target": "3 x 12-15",
+            "prescribed": "6.8-10 kg",
+            "currentWeight": 13.6
+          },
+          {
+            "id": "cable-lateral",
+            "name": "Cable Lateral Raise",
+            "target": "2-3 x 12",
+            "prescribed": "Light-moderate",
+            "currentWeight": 6.8
+          },
+          {
+            "id": "pallof",
+            "name": "Pallof Press",
+            "target": "2 x 10 / side",
+            "prescribed": "8-12 kg",
+            "currentWeight": 11.3
+          }
+        ]
+      },
+      {
+        "id": "day3",
+        "name": "Day 3 - Pull Volume + Core",
+        "exercises": [
+          {
+            "id": "pullup-volume",
+            "name": "Pull-Ups (Volume)",
+            "target": "18-20 total reps (sets as needed)",
+            "prescribed": "Bodyweight 65 kg",
+            "currentWeight": 65
+          },
+          {
+            "id": "lat-pd",
+            "name": "Lat Pulldown (Neutral Grip)",
+            "target": "3 x 8-10",
+            "prescribed": "35 kg",
+            "currentWeight": 43
+          },
+          {
+            "id": "seated-row",
+            "name": "Seated Cable Row",
+            "target": "3 x 8-10",
+            "prescribed": "35-40 kg",
+            "currentWeight": 40
+          },
+          {
+            "id": "leg-raise",
+            "name": "Hanging Leg Raise",
+            "target": "3 x 8-10",
+            "prescribed": "Bodyweight",
+            "currentWeight": 0
+          }
+        ]
+      },
+      {
+        "id": "day4",
+        "name": "Day 4 - Posterior + Shoulder Stability",
+        "exercises": [
+          {
+            "id": "rdl-d4",
+            "name": "Romanian Deadlift (Light)",
+            "target": "3 x 8",
+            "prescribed": "40 kg",
+            "currentWeight": 60
+          },
+          {
+            "id": "leg-press",
+            "name": "Leg Press",
+            "target": "3 x 8-10",
+            "prescribed": "80-100 kg",
+            "currentWeight": 68
+          },
+          {
+            "id": "incline-db",
+            "name": "Incline DB Press",
+            "target": "3 x 8",
+            "prescribed": "12-14 kg DBs",
+            "currentWeight": 20
+          },
+          {
+            "id": "rear-delt",
+            "name": "Rear Delt Fly (Machine/Cable)",
+            "target": "3 x 12",
+            "prescribed": "Moderate",
+            "currentWeight": 4
+          },
+          {
+            "id": "dead-hang",
+            "name": "Dead Hang",
+            "target": "2 x 30-40 sec",
+            "prescribed": "Bodyweight",
+            "currentWeight": 0
+          }
+        ]
+      }
+    ]
+  },
+  "logs": [
+    {
+      "createdAt": "2026-03-09T01:25:58.918Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 50,
+      "reps": 6,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-09T01:30:08.693Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 5,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-09T01:32:46.849Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 3,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-09T01:34:23.404Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 2,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-09T01:40:19.628Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "chest-row",
+      "exerciseName": "Chest-Supported Row",
+      "target": "3 x 8 (pause at top)",
+      "weight": 10,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-09T01:46:40.494Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "knee-raise",
+      "exerciseName": "Hanging Knee Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-10T00:32:06.932Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 15,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-10T00:34:18.912Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 17.5,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-10T00:37:59.861Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-shoulder",
+      "exerciseName": "Seated DB Shoulder Press",
+      "target": "3 x 6",
+      "weight": 10,
+      "reps": 6,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-10T00:40:50.235Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-shoulder",
+      "exerciseName": "Seated DB Shoulder Press",
+      "target": "3 x 6",
+      "weight": 15,
+      "reps": 6,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-10T00:45:59.859Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "face-pull",
+      "exerciseName": "Face Pull",
+      "target": "3 x 12-15",
+      "weight": 6.8,
+      "reps": 12,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-10T00:52:07.325Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 0,
+      "reps": 10,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-10T00:55:32.998Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "pallof",
+      "exerciseName": "Pallof Press",
+      "target": "2 x 10 / side",
+      "weight": 8,
+      "reps": 10,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-10T23:07:45.637Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 6,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-10T23:08:49.833Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 4,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-10T23:12:46.395Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 2,
+      "sets": 4
+    },
+    {
+      "createdAt": "2026-03-10T23:17:05.154Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "lat-pd",
+      "exerciseName": "Lat Pulldown (Neutral Grip)",
+      "target": "3 x 8-10",
+      "weight": 35,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-10T23:27:06.221Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "seated-row",
+      "exerciseName": "Seated Cable Row",
+      "target": "3 x 8-10",
+      "weight": 35,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-10T23:29:41.219Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "leg-raise",
+      "exerciseName": "Hanging Leg Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 10,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-10T23:32:07.571Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "leg-raise",
+      "exerciseName": "Hanging Leg Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-13T01:17:32.308Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "leg-press",
+      "exerciseName": "Leg Press",
+      "target": "3 x 8-10",
+      "weight": 52,
+      "reps": 10,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-13T01:18:37.415Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "leg-press",
+      "exerciseName": "Leg Press",
+      "target": "3 x 8-10",
+      "weight": 52,
+      "reps": 10,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-13T01:22:17.217Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "leg-press",
+      "exerciseName": "Leg Press",
+      "target": "3 x 8-10",
+      "weight": 52,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-13T01:22:26.105Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rdl-d4",
+      "exerciseName": "Romanian Deadlift (Light)",
+      "target": "3 x 8",
+      "weight": 50,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-13T01:35:05.293Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "incline-db",
+      "exerciseName": "Incline DB Press",
+      "target": "3 x 8",
+      "weight": 17.5,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-13T01:42:53.569Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 0,
+      "reps": 12,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-13T01:42:56.479Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 0,
+      "reps": 10,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-13T01:45:27.714Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 0,
+      "reps": 30,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-14T01:09:37.896Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 50,
+      "reps": 10,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-14T01:09:42.775Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 50,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-14T01:15:10.894Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 7,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-14T01:20:40.772Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 3,
+      "sets": 4
+    },
+    {
+      "createdAt": "2026-03-14T01:24:33.983Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "knee-raise",
+      "exerciseName": "Hanging Knee Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-14T01:32:31.484Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "chest-row",
+      "exerciseName": "Chest-Supported Row",
+      "target": "3 x 8 (pause at top)",
+      "weight": 12.5,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-15T01:33:37.510Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 17.5,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-15T01:35:12.319Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 20,
+      "reps": 9,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-15T01:37:38.902Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-shoulder",
+      "exerciseName": "Seated DB Shoulder Press",
+      "target": "3 x 6",
+      "weight": 15,
+      "reps": 6,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-15T01:40:11.177Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-shoulder",
+      "exerciseName": "Seated DB Shoulder Press",
+      "target": "3 x 6",
+      "weight": 17.5,
+      "reps": 6,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-15T01:40:14.919Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-shoulder",
+      "exerciseName": "Seated DB Shoulder Press",
+      "target": "3 x 6",
+      "weight": 17.5,
+      "reps": 4,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-15T01:41:42.818Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "face-pull",
+      "exerciseName": "Face Pull",
+      "target": "3 x 12-15",
+      "weight": 9.1,
+      "reps": 12,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-15T01:42:44.766Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "face-pull",
+      "exerciseName": "Face Pull",
+      "target": "3 x 12-15",
+      "weight": 11.2,
+      "reps": 12,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-15T01:50:34.550Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 0,
+      "reps": 10,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-15T01:58:35.312Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "knee-raise",
+      "exerciseName": "Hanging Knee Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-16T01:52:40.260Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 7,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-16T01:57:51.277Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 3,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-16T02:04:43.042Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "lat-pd",
+      "exerciseName": "Lat Pulldown (Neutral Grip)",
+      "target": "3 x 8-10",
+      "weight": 35,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-16T02:12:42.438Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "seated-row",
+      "exerciseName": "Seated Cable Row",
+      "target": "3 x 8-10",
+      "weight": 28,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-16T02:21:46.483Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "leg-raise",
+      "exerciseName": "Hanging Leg Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-16T02:21:49.349Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "leg-raise",
+      "exerciseName": "Hanging Leg Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 5,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-17T01:44:22.301Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rdl-d4",
+      "exerciseName": "Romanian Deadlift (Light)",
+      "target": "3 x 8",
+      "weight": 60,
+      "reps": 6,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-17T01:44:26.741Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rdl-d4",
+      "exerciseName": "Romanian Deadlift (Light)",
+      "target": "3 x 8",
+      "weight": 60,
+      "reps": 8,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-17T01:50:42.382Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "leg-press",
+      "exerciseName": "Leg Press",
+      "target": "3 x 8-10",
+      "weight": 68,
+      "reps": 10,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-17T02:02:45.764Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "incline-db",
+      "exerciseName": "Incline DB Press",
+      "target": "3 x 8",
+      "weight": 20,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-17T02:09:59.440Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 0,
+      "reps": 12,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-18T01:57:43.903Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 60,
+      "reps": 5,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-18T02:02:40.514Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 65,
+      "reps": 5,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-18T02:13:55.814Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 5,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-18T02:20:19.754Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 3,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-18T02:20:23.116Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 4,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-18T02:25:21.859Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "chest-row",
+      "exerciseName": "Chest-Supported Row",
+      "target": "3 x 8 (pause at top)",
+      "weight": 12.5,
+      "reps": 8,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-18T02:25:29.674Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "chest-row",
+      "exerciseName": "Chest-Supported Row",
+      "target": "3 x 8 (pause at top)",
+      "weight": 15,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-18T02:36:41.577Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "knee-raise",
+      "exerciseName": "Hanging Knee Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 4
+    },
+    {
+      "createdAt": "2026-03-19T00:42:25.156Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 17.5,
+      "reps": 6,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-19T00:42:32.433Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 20,
+      "reps": 10,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-19T00:48:32.144Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-shoulder",
+      "exerciseName": "Seated DB Shoulder Press",
+      "target": "3 x 6",
+      "weight": 36,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-19T00:49:40.556Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "face-pull",
+      "exerciseName": "Face Pull",
+      "target": "3 x 12-15",
+      "weight": 11.2,
+      "reps": 10,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-19T00:51:11.550Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "face-pull",
+      "exerciseName": "Face Pull",
+      "target": "3 x 12-15",
+      "weight": 13.6,
+      "reps": 12,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-19T00:56:14.717Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 0,
+      "reps": 12,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-19T01:05:54.108Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "pallof",
+      "exerciseName": "Pallof Press",
+      "target": "2 x 10 / side",
+      "weight": 11.3,
+      "reps": 12,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-20T01:16:24.029Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 8,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-20T01:16:27.109Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 6,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-20T01:17:27.233Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 5,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-20T01:17:43.551Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "pullup-volume",
+      "exerciseName": "Pull-Ups (Volume)",
+      "target": "18-20 total reps (sets as needed)",
+      "weight": 65,
+      "reps": 3,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-20T01:25:05.337Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "lat-pd",
+      "exerciseName": "Lat Pulldown (Neutral Grip)",
+      "target": "3 x 8-10",
+      "weight": 36,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-20T01:28:46.839Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "seated-row",
+      "exerciseName": "Seated Cable Row",
+      "target": "3 x 8-10",
+      "weight": 29,
+      "reps": 10,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-20T01:33:43.984Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "seated-row",
+      "exerciseName": "Seated Cable Row",
+      "target": "3 x 8-10",
+      "weight": 36,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-03-20T01:43:44.405Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "leg-raise",
+      "exerciseName": "Hanging Leg Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-03-21T18:19:56.007Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 31,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-03-31T19:46:05.882Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 42,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-04T15:30:38.106Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 35,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-06T03:47:05.436Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 2.5,
+      "reps": 8,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-06T04:08:41.467Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 2.5,
+      "reps": 6,
+      "sets": 5
+    },
+    {
+      "createdAt": "2026-04-06T04:08:51.142Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 50,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-06T04:16:09.206Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "knee-raise",
+      "exerciseName": "Hanging Knee Raise",
+      "target": "3 x 8-10",
+      "weight": 0,
+      "reps": 6,
+      "sets": 4
+    },
+    {
+      "createdAt": "2026-04-07T09:48:48.887Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 50,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-08T19:39:31.219Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 30,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-10T12:37:15.776Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 65,
+      "reps": 8,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-10T12:40:44.985Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "rdl-d1",
+      "exerciseName": "Romanian Deadlift",
+      "target": "3 x 5",
+      "weight": 70,
+      "reps": 6,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-10T12:45:31.086Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "seated-row",
+      "exerciseName": "Seated Cable Row",
+      "target": "3 x 8-10",
+      "weight": 40,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-04-10T17:33:10.841Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 30,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-11T13:31:24.819Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "lat-pd",
+      "exerciseName": "Lat Pulldown (Neutral Grip)",
+      "target": "3 x 8-10",
+      "weight": 55,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-11T13:36:12.883Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 2.5,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-11T13:36:29.936Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 2.5,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-11T13:50:47.536Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 33,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-16T21:07:16.090Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 2.5,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-16T21:07:43.287Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 4,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-16T21:09:42.344Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "lat-pd",
+      "exerciseName": "Lat Pulldown (Neutral Grip)",
+      "target": "3 x 8-10",
+      "weight": 43,
+      "reps": 6,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-16T21:15:02.996Z",
+      "dayId": "day3",
+      "dayName": "Day 3 - Pull Volume + Core",
+      "exerciseId": "seated-row",
+      "exerciseName": "Seated Cable Row",
+      "target": "3 x 8-10",
+      "weight": 40,
+      "reps": 8,
+      "sets": 2
+    },
+    {
+      "createdAt": "2026-04-16T21:20:13.326Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 65,
+      "reps": 51,
+      "sets": 1
+    },
+    {
+      "createdAt": "2026-04-18T21:30:58.321Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "db-bench",
+      "exerciseName": "DB Bench Press",
+      "target": "3 x 6",
+      "weight": 20,
+      "reps": 8,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-04-19T12:29:50.554Z",
+      "dayId": "day2",
+      "dayName": "Day 2 - Push + Upper Back",
+      "exerciseId": "cable-lateral",
+      "exerciseName": "Cable Lateral Raise",
+      "target": "2-3 x 12",
+      "weight": 6.8,
+      "reps": 4,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-04-19T12:30:08.167Z",
+      "dayId": "day4",
+      "dayName": "Day 4 - Posterior + Shoulder Stability",
+      "exerciseId": "rear-delt",
+      "exerciseName": "Rear Delt Fly (Machine/Cable)",
+      "target": "3 x 12",
+      "weight": 4,
+      "reps": 4,
+      "sets": 3
+    },
+    {
+      "createdAt": "2026-04-19T12:30:38.426Z",
+      "dayId": "day1",
+      "dayName": "Day 1 - Lower + Pull Strength",
+      "exerciseId": "pullup-strength",
+      "exerciseName": "Pull-Ups (Strength Focus)",
+      "target": "5 x 3",
+      "weight": 70,
+      "reps": 5,
+      "sets": 4
+    }
+  ]
+}
