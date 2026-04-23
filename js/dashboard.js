@@ -1,8 +1,8 @@
 import { loadState } from "./storage.js";
 import { initThemeToggle } from "./theme.js";
 
-const state = loadState();
-const logs = Array.isArray(state.logs) ? state.logs : [];
+const REFERENCE_BACKUP_URL = "./references/gym-tracker-backup-2026-04-23.json";
+const PULLUP_BASELINE_KG = 65;
 
 const el = {
   monthDays: document.getElementById("monthDays"),
@@ -11,6 +11,8 @@ const el = {
   themeToggle: document.getElementById("themeToggle"),
   calendarMonth: document.getElementById("calendarMonth"),
   calendarGrid: document.getElementById("calendarGrid"),
+  calPrev: document.getElementById("calPrev"),
+  calNext: document.getElementById("calNext"),
   pullupSection: document.getElementById("pullupSection"),
   benchSection: document.getElementById("benchSection"),
   progressChart: document.getElementById("progressChart"),
@@ -55,16 +57,16 @@ function renderStats(daySet) {
   el.lastGymDay.textContent = lastKey ? formatPrettyDate(lastKey) : "No logs yet";
 }
 
+let calendarCursor = new Date();
+calendarCursor.setDate(1);
+
 function renderCalendar(daySet) {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  el.calendarMonth.textContent = now.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
+  el.calendarMonth.textContent = calendarCursor.toLocaleDateString(undefined, { month: "long", year: "numeric" });
 
   const first = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  // Convert JS week day (Sun=0) to Mon=0 index.
   const startOffset = (first.getDay() + 6) % 7;
 
   const cells = [];
@@ -85,7 +87,17 @@ function renderCalendar(daySet) {
   el.calendarGrid.innerHTML = cells.join("");
 }
 
-const PULLUP_BASELINE_KG = 65;
+function shiftCalendar(delta, daySet) {
+  calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + delta, 1);
+  renderCalendar(daySet);
+}
+
+function pullupAddedKg(weight) {
+  const w = Number(weight);
+  if (!Number.isFinite(w)) return 0;
+  if (w >= PULLUP_BASELINE_KG) return Math.max(0, w - PULLUP_BASELINE_KG);
+  return Math.max(0, w);
+}
 
 function buildPullupSeries(items, daysBack = 60) {
   const dailyPullups = new Map();
@@ -108,11 +120,9 @@ function buildPullupSeries(items, daysBack = 60) {
 
     dailyPullups.set(key, (dailyPullups.get(key) || 0) + totalReps);
 
-    const added = Number(entry.weight);
-    if (Number.isFinite(added)) {
-      const prev = dailyMaxAdded.get(key);
-      dailyMaxAdded.set(key, prev === undefined ? added : Math.max(prev, added));
-    }
+    const added = pullupAddedKg(entry.weight);
+    const prev = dailyMaxAdded.get(key);
+    dailyMaxAdded.set(key, prev === undefined ? added : Math.max(prev, added));
   }
 
   const labels = [];
@@ -131,9 +141,8 @@ function buildPullupSeries(items, daysBack = 60) {
     const hasData = dailyPullups.has(key);
     pullups.push(hasData ? dailyPullups.get(key) : null);
 
-    const added = dailyMaxAdded.has(key) ? Math.max(0, dailyMaxAdded.get(key)) : 0;
-    const total = PULLUP_BASELINE_KG + added;
-    totalWeights.push(hasData ? total : null);
+    const added = dailyMaxAdded.get(key) || 0;
+    totalWeights.push(hasData ? PULLUP_BASELINE_KG + added : null);
     radii.push(hasData ? 3 + added * 0.6 : 0);
   }
 
@@ -174,9 +183,8 @@ function buildBenchWeightSeries(items, daysBack = 60) {
   return { labels, weights };
 }
 
-function renderChart(items) {
+function renderPullupChart(items) {
   const { labels, pullups, radii, totalWeights } = buildPullupSeries(items, 60);
-  // Chart.js is loaded from CDN in dashboard.html.
   // eslint-disable-next-line no-undef
   new Chart(el.progressChart, {
     type: "line",
@@ -201,9 +209,7 @@ function renderChart(items) {
     options: {
       responsive: true,
       plugins: {
-        legend: {
-          labels: { color: "#d4d4d8" }
-        },
+        legend: { labels: { color: "#d4d4d8" } },
         tooltip: {
           callbacks: {
             afterLabel: (ctx) => {
@@ -214,14 +220,8 @@ function renderChart(items) {
         }
       },
       scales: {
-        x: {
-          ticks: { color: "#71717a", maxTicksLimit: 10 },
-          grid: { color: "rgba(113,113,122,0.15)" }
-        },
-        y: {
-          ticks: { color: "#71717a" },
-          grid: { color: "rgba(113,113,122,0.15)" }
-        }
+        x: { ticks: { color: "#71717a", maxTicksLimit: 10 }, grid: { color: "rgba(113,113,122,0.15)" } },
+        y: { ticks: { color: "#71717a" }, grid: { color: "rgba(113,113,122,0.15)" } }
       }
     }
   });
@@ -229,7 +229,6 @@ function renderChart(items) {
 
 function renderBenchChart(items) {
   const { labels, weights } = buildBenchWeightSeries(items, 60);
-  // Chart.js is loaded from CDN in dashboard.html.
   // eslint-disable-next-line no-undef
   new Chart(el.benchChart, {
     type: "line",
@@ -251,69 +250,66 @@ function renderBenchChart(items) {
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: {
-          labels: { color: "#d4d4d8" }
-        }
-      },
+      plugins: { legend: { labels: { color: "#d4d4d8" } } },
       scales: {
-        x: {
-          ticks: { color: "#71717a", maxTicksLimit: 10 },
-          grid: { color: "rgba(113,113,122,0.15)" }
-        },
-        y: {
-          ticks: { color: "#71717a" },
-          grid: { color: "rgba(113,113,122,0.15)" }
-        }
+        x: { ticks: { color: "#71717a", maxTicksLimit: 10 }, grid: { color: "rgba(113,113,122,0.15)" } },
+        y: { ticks: { color: "#71717a" }, grid: { color: "rgba(113,113,122,0.15)" } }
       }
     }
   });
 }
 
-function menuHasPullups(plan) {
-  for (const day of (plan.days || [])) {
-    for (const ex of (day.exercises || [])) {
-      const id = String(ex.id || "").toLowerCase();
-      const name = String(ex.name || "").toLowerCase();
-      if (id.includes("pullup") || id.includes("pull-up") || name.includes("pullup") || name.includes("pull-up") || name.includes("pull up")) {
-        return true;
-      }
-    }
-  }
-  return false;
+function hasAnyPullupLog(items) {
+  return items.some((e) => {
+    const n = String(e.exerciseName || "").toLowerCase();
+    return n.includes("pull-up") || n.includes("pull up") || n.includes("pullup");
+  });
 }
 
-function menuHasDbBench(plan) {
-  for (const day of (plan.days || [])) {
-    for (const ex of (day.exercises || [])) {
-      const id = String(ex.id || "").toLowerCase();
-      const name = String(ex.name || "").toLowerCase();
-      if (id === "db_bench" || name.includes("db bench") || name.includes("dumbbell bench")) {
-        return true;
-      }
-    }
-  }
-  return false;
+function hasAnyDbBenchLog(items) {
+  return items.some((e) => {
+    const n = String(e.exerciseName || "").toLowerCase();
+    const id = String(e.exerciseId || "").toLowerCase();
+    return id === "db_bench" || n.includes("db bench press");
+  });
 }
 
-function init() {
+async function loadReferenceLogs() {
+  try {
+    const res = await fetch(REFERENCE_BACKUP_URL, { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data?.logs) ? data.logs : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function init() {
   initThemeToggle(el.themeToggle);
+
+  const state = loadState();
+  const referenceLogs = await loadReferenceLogs();
+  const logs = referenceLogs || (Array.isArray(state.logs) ? state.logs : []);
+
   const baseTitle = String(state.plan?.title || "Training Tracker");
-  if (el.dashboardTitle) {
-    el.dashboardTitle.textContent = `${baseTitle} Dashboard`;
-  }
+  if (el.dashboardTitle) el.dashboardTitle.textContent = `${baseTitle} Dashboard`;
   document.title = `${baseTitle} Dashboard`;
+
   const daySet = buildWorkoutDaySet(logs);
   renderStats(daySet);
   renderCalendar(daySet);
 
-  if (menuHasPullups(state.plan)) {
-    renderChart(logs);
+  el.calPrev?.addEventListener("click", () => shiftCalendar(-1, daySet));
+  el.calNext?.addEventListener("click", () => shiftCalendar(1, daySet));
+
+  if (hasAnyPullupLog(logs)) {
+    renderPullupChart(logs);
   } else if (el.pullupSection) {
     el.pullupSection.remove();
   }
 
-  if (menuHasDbBench(state.plan)) {
+  if (hasAnyDbBenchLog(logs)) {
     renderBenchChart(logs);
   } else if (el.benchSection) {
     el.benchSection.remove();

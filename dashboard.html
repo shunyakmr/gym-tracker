@@ -155,7 +155,11 @@
     <section class="panel rounded-2xl p-4 mb-3">
       <div class="flex items-center justify-between mb-2">
         <h2 class="text-lg font-semibold text-cyan-300">Consistency Calendar</h2>
-        <p id="calendarMonth" class="text-sm text-zinc-400"></p>
+        <div class="flex items-center gap-2">
+          <button id="calPrev" type="button" class="rounded-md border border-zinc-700 px-2 py-0.5 text-sm text-zinc-300 hover:border-cyan-500 hover:text-cyan-300" aria-label="Previous month">&lt;</button>
+          <p id="calendarMonth" class="text-sm text-zinc-400 min-w-[8rem] text-center"></p>
+          <button id="calNext" type="button" class="rounded-md border border-zinc-700 px-2 py-0.5 text-sm text-zinc-300 hover:border-cyan-500 hover:text-cyan-300" aria-label="Next month">&gt;</button>
+        </div>
       </div>
       <div class="grid grid-cols-7 gap-1 text-[11px] text-zinc-500 mb-1">
         <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
@@ -175,6 +179,6 @@
     </section>
   </main>
 
-  <script type="module" src="./js/dashboard.js"></script>
+  <script type="module" src="./js/dashboard.js?v=2026-04-23-refdata"></script>
 </body>
 </html>
