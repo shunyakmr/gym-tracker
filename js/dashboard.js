@@ -85,8 +85,11 @@ function renderCalendar(daySet) {
   el.calendarGrid.innerHTML = cells.join("");
 }
 
+const PULLUP_BASELINE_KG = 65;
+
 function buildPullupSeries(items, daysBack = 60) {
   const dailyPullups = new Map();
+  const dailyMaxAdded = new Map();
 
   for (const entry of items) {
     const name = String(entry.exerciseName || "").toLowerCase();
@@ -104,10 +107,18 @@ function buildPullupSeries(items, daysBack = 60) {
     }
 
     dailyPullups.set(key, (dailyPullups.get(key) || 0) + totalReps);
+
+    const added = Number(entry.weight);
+    if (Number.isFinite(added)) {
+      const prev = dailyMaxAdded.get(key);
+      dailyMaxAdded.set(key, prev === undefined ? added : Math.max(prev, added));
+    }
   }
 
   const labels = [];
   const pullups = [];
+  const radii = [];
+  const totalWeights = [];
 
   const end = new Date();
   end.setHours(0, 0, 0, 0);
@@ -117,10 +128,16 @@ function buildPullupSeries(items, daysBack = 60) {
   for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
     const key = toLocalDateKey(d);
     labels.push(`${d.getMonth() + 1}/${d.getDate()}`);
-    pullups.push(dailyPullups.has(key) ? dailyPullups.get(key) : null);
+    const hasData = dailyPullups.has(key);
+    pullups.push(hasData ? dailyPullups.get(key) : null);
+
+    const added = dailyMaxAdded.has(key) ? Math.max(0, dailyMaxAdded.get(key)) : 0;
+    const total = PULLUP_BASELINE_KG + added;
+    totalWeights.push(hasData ? total : null);
+    radii.push(hasData ? 3 + added * 0.6 : 0);
   }
 
-  return { labels, pullups };
+  return { labels, pullups, radii, totalWeights };
 }
 
 function buildBenchWeightSeries(items, daysBack = 60) {
@@ -158,7 +175,7 @@ function buildBenchWeightSeries(items, daysBack = 60) {
 }
 
 function renderChart(items) {
-  const { labels, pullups } = buildPullupSeries(items, 60);
+  const { labels, pullups, radii, totalWeights } = buildPullupSeries(items, 60);
   // Chart.js is loaded from CDN in dashboard.html.
   // eslint-disable-next-line no-undef
   new Chart(el.progressChart, {
@@ -167,15 +184,17 @@ function renderChart(items) {
       labels,
       datasets: [
         {
-          label: "Pull-Ups Total Reps / Day",
+          label: "Pull-Ups Total Reps / Day (dot size = body+added kg)",
           data: pullups,
           borderColor: "#22d3ee",
           backgroundColor: "rgba(34,211,238,0.16)",
           borderWidth: 2,
           tension: 0.25,
-          pointRadius: 2,
+          pointRadius: radii,
+          pointHoverRadius: radii.map((r) => (r ? r + 2 : 0)),
           spanGaps: true,
-          fill: true
+          fill: true,
+          totalWeights
         }
       ]
     },
@@ -184,6 +203,14 @@ function renderChart(items) {
       plugins: {
         legend: {
           labels: { color: "#d4d4d8" }
+        },
+        tooltip: {
+          callbacks: {
+            afterLabel: (ctx) => {
+              const w = ctx.dataset.totalWeights?.[ctx.dataIndex];
+              return Number.isFinite(w) ? `Weight: ${w} kg` : "";
+            }
+          }
         }
       },
       scales: {

@@ -411,7 +411,12 @@ function importBackupFromFile(file) {
 }
 
 function bindEvents() {
-  el.daySelect?.addEventListener("change", renderExerciseSelect);
+  el.daySelect?.addEventListener("change", () => {
+    renderExerciseSelect();
+    activeDayTab = el.daySelect.value;
+    renderDayTabs();
+    renderExerciseCards();
+  });
   el.exerciseSelect?.addEventListener("change", setWeightHint);
   el.addGroupBtn?.addEventListener("click", () => addGroupRow());
   el.saveLogBtn?.addEventListener("click", saveLog);
