@@ -336,18 +336,32 @@ function render(logs, planTitle) {
 }
 
 let currentLogs = [];
+let lastStateRaw = "";
 
-function refresh() {
+function readRawState() {
+  try {
+    return localStorage.getItem("gym-menu-tracker-v4") || "";
+  } catch (_) {
+    return "";
+  }
+}
+
+function refresh(force = false) {
+  const raw = readRawState();
+  if (!force && raw === lastStateRaw) return;
+  lastStateRaw = raw;
+
   const state = loadState();
   const stateLogs = Array.isArray(state.logs) ? state.logs : [];
   currentLogs = mergeLogs(cachedReferenceLogs || [], stateLogs);
+  console.log(`[dashboard] refresh: ${stateLogs.length} state logs, ${currentLogs.length} merged`);
   render(currentLogs, state.plan?.title);
 }
 
 async function init() {
   initThemeToggle(el.themeToggle);
   cachedReferenceLogs = await loadReferenceLogs();
-  refresh();
+  refresh(true);
 
   window.addEventListener("storage", (e) => {
     if (!e.key || e.key.startsWith("gym-")) refresh();
@@ -355,7 +369,8 @@ async function init() {
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") refresh();
   });
-  window.addEventListener("focus", refresh);
+  window.addEventListener("focus", () => refresh());
+  setInterval(() => refresh(), 1500);
 }
 
 init();
