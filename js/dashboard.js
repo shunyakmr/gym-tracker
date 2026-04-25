@@ -183,10 +183,14 @@ function buildBenchWeightSeries(items, daysBack = 60) {
   return { labels, weights };
 }
 
+let pullupChartInstance = null;
+let benchChartInstance = null;
+
 function renderPullupChart(items) {
   const { labels, pullups, radii, totalWeights } = buildPullupSeries(items, 60);
+  if (pullupChartInstance) pullupChartInstance.destroy();
   // eslint-disable-next-line no-undef
-  new Chart(el.progressChart, {
+  pullupChartInstance = new Chart(el.progressChart, {
     type: "line",
     data: {
       labels,
@@ -229,8 +233,9 @@ function renderPullupChart(items) {
 
 function renderBenchChart(items) {
   const { labels, weights } = buildBenchWeightSeries(items, 60);
+  if (benchChartInstance) benchChartInstance.destroy();
   // eslint-disable-next-line no-undef
-  new Chart(el.benchChart, {
+  benchChartInstance = new Chart(el.benchChart, {
     type: "line",
     data: {
       labels,
@@ -297,15 +302,11 @@ async function loadReferenceLogs() {
   }
 }
 
-async function init() {
-  initThemeToggle(el.themeToggle);
+let cachedReferenceLogs = null;
+let calendarListenersBound = false;
 
-  const state = loadState();
-  const referenceLogs = await loadReferenceLogs();
-  const stateLogs = Array.isArray(state.logs) ? state.logs : [];
-  const logs = mergeLogs(referenceLogs || [], stateLogs);
-
-  const baseTitle = String(state.plan?.title || "Training Tracker");
+function render(logs, planTitle) {
+  const baseTitle = String(planTitle || "Training Tracker");
   if (el.dashboardTitle) el.dashboardTitle.textContent = `${baseTitle} Dashboard`;
   document.title = `${baseTitle} Dashboard`;
 
@@ -313,20 +314,48 @@ async function init() {
   renderStats(daySet);
   renderCalendar(daySet);
 
-  el.calPrev?.addEventListener("click", () => shiftCalendar(-1, daySet));
-  el.calNext?.addEventListener("click", () => shiftCalendar(1, daySet));
+  if (!calendarListenersBound) {
+    el.calPrev?.addEventListener("click", () => shiftCalendar(-1, buildWorkoutDaySet(currentLogs)));
+    el.calNext?.addEventListener("click", () => shiftCalendar(1, buildWorkoutDaySet(currentLogs)));
+    calendarListenersBound = true;
+  }
 
   if (hasAnyPullupLog(logs)) {
+    if (el.pullupSection) el.pullupSection.style.display = "";
     renderPullupChart(logs);
   } else if (el.pullupSection) {
-    el.pullupSection.remove();
+    el.pullupSection.style.display = "none";
   }
 
   if (hasAnyDbBenchLog(logs)) {
+    if (el.benchSection) el.benchSection.style.display = "";
     renderBenchChart(logs);
   } else if (el.benchSection) {
-    el.benchSection.remove();
+    el.benchSection.style.display = "none";
   }
+}
+
+let currentLogs = [];
+
+function refresh() {
+  const state = loadState();
+  const stateLogs = Array.isArray(state.logs) ? state.logs : [];
+  currentLogs = mergeLogs(cachedReferenceLogs || [], stateLogs);
+  render(currentLogs, state.plan?.title);
+}
+
+async function init() {
+  initThemeToggle(el.themeToggle);
+  cachedReferenceLogs = await loadReferenceLogs();
+  refresh();
+
+  window.addEventListener("storage", (e) => {
+    if (!e.key || e.key.startsWith("gym-")) refresh();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") refresh();
+  });
+  window.addEventListener("focus", refresh);
 }
 
 init();
