@@ -1,7 +1,7 @@
 import { loadState } from "./storage.js";
 import { initThemeToggle } from "./theme.js";
 
-const REFERENCE_BACKUP_URL = "./references/gym-tracker-backup-2026-04-23.json";
+const REFERENCE_BACKUP_URL = "./references/gym-tracker-backup-2026-04-25.json";
 const PULLUP_BASELINE_KG = 65;
 
 const el = {
@@ -274,6 +274,18 @@ function hasAnyDbBenchLog(items) {
   });
 }
 
+function mergeLogs(a, b) {
+  const seen = new Set();
+  const out = [];
+  for (const entry of [...a, ...b]) {
+    const key = entry?.id ?? `${entry?.createdAt}|${entry?.exerciseId}|${entry?.exerciseName}|${entry?.weight}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(entry);
+  }
+  return out;
+}
+
 async function loadReferenceLogs() {
   try {
     const res = await fetch(REFERENCE_BACKUP_URL, { cache: "no-store" });
@@ -290,7 +302,8 @@ async function init() {
 
   const state = loadState();
   const referenceLogs = await loadReferenceLogs();
-  const logs = referenceLogs || (Array.isArray(state.logs) ? state.logs : []);
+  const stateLogs = Array.isArray(state.logs) ? state.logs : [];
+  const logs = mergeLogs(referenceLogs || [], stateLogs);
 
   const baseTitle = String(state.plan?.title || "Training Tracker");
   if (el.dashboardTitle) el.dashboardTitle.textContent = `${baseTitle} Dashboard`;
